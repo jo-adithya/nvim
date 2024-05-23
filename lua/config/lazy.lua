@@ -11,6 +11,33 @@ require("lazy").setup({
   spec = {
     -- add LazyVim and import its plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
+
+    -- GitHub Copilot
+    { import = "lazyvim.plugins.extras.coding.copilot" },
+
+    -- Formatters
+    { import = "lazyvim.plugins.extras.linting.eslint" },
+    { import = "lazyvim.plugins.extras.formatting.prettier" },
+    { import = "lazyvim.plugins.extras.formatting.black" },
+
+    -- Editors
+    { import = "lazyvim.plugins.extras.editor.harpoon2" }, -- Harpoon 2
+    { import = "lazyvim.plugins.extras.editor.navic" }, -- Navic
+    { import = "lazyvim.plugins.extras.editor.trouble-v3" }, -- Trouble v3
+    { import = "lazyvim.plugins.extras.editor.leap" }, -- Leap
+
+    -- Utils
+    -- { import = "lazyvim.plugins.extras.util.project" }, -- Project
+
+    -- Neotest
+    { import = "lazyvim.plugins.extras.test.core" },
+
+    -- UI Elements
+    { import = "lazyvim.plugins.extras.ui.alpha" }, -- Alpha Dashboard
+
+    -- Languages
+    { import = "lazyvim.plugins.extras.lang.python" }, -- Python
+
     -- import any extras modules here
     -- { import = "lazyvim.plugins.extras.lang.typescript" },
     -- { import = "lazyvim.plugins.extras.lang.json" },
@@ -27,7 +54,7 @@ require("lazy").setup({
     version = false, -- always use the latest git commit
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
-  install = { colorscheme = { "tokyonight", "habamax" } },
+  install = { colorscheme = { "tokyonight", "catppuccin" } },
   checker = { enabled = true }, -- automatically check for plugin updates
   performance = {
     rtp = {
