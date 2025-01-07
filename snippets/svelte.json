@@ -1,0 +1,6 @@
+{
+  "svelte ts script": {
+    "prefix": "ts-script",
+    "body": ["<script lang=\"ts\"">", "  ${1:// you script goes here}", "</script>"]
+  }
+}

@@ -23,26 +23,18 @@ require("lazy").setup({
     -- Editors
     { import = "lazyvim.plugins.extras.editor.harpoon2" }, -- Harpoon 2
     { import = "lazyvim.plugins.extras.editor.navic" }, -- Navic
-    { import = "lazyvim.plugins.extras.editor.trouble-v3" }, -- Trouble v3
     { import = "lazyvim.plugins.extras.editor.leap" }, -- Leap
 
     -- Utils
-    -- { import = "lazyvim.plugins.extras.util.project" }, -- Project
+    { import = "lazyvim.plugins.extras.util.project" }, -- Project
 
     -- Neotest
     { import = "lazyvim.plugins.extras.test.core" },
 
-    -- UI Elements
-    { import = "lazyvim.plugins.extras.ui.alpha" }, -- Alpha Dashboard
-
     -- Languages
-    { import = "lazyvim.plugins.extras.lang.python" }, -- Python
+    { import = "lazyvim.plugins.extras.lang.rust" },
 
-    -- import any extras modules here
-    -- { import = "lazyvim.plugins.extras.lang.typescript" },
-    -- { import = "lazyvim.plugins.extras.lang.json" },
-    -- { import = "lazyvim.plugins.extras.ui.mini-animate" },
-    -- import/override with your plugins
+    -- Plugins
     { import = "plugins" },
   },
   defaults = {

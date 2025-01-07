@@ -1,4 +1,5 @@
 local M = {
+  enabled = false,
   "RRethy/vim-illuminate",
   event = "VeryLazy",
 }

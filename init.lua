@@ -7,3 +7,4 @@ vim.g.loaded_netrwPlugin = 1
 require("config.lazy")
 
 vim.opt.showtabline = 1
+vim.o.winblend = 0
