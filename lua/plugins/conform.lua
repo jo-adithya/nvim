@@ -15,6 +15,7 @@ function setup()
 			svelte = { "prettierd" },
 			json = { "prettierd" },
 			typst = { "typstyle" },
+      sh = { "shfmt" },
 		},
 
 		vim.keymap.set("n", "<leader>cf", function()

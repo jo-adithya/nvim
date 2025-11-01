@@ -3,25 +3,30 @@ local mini_capabilities = MiniCompletion.get_lsp_capabilities()
 local capabilities = vim.tbl_deep_extend("force", lsp_capabilities, mini_capabilities)
 
 local function enable_lsp()
-	-- Lua
-	vim.lsp.enable("emmylua_ls")
+  vim.lsp.enable({
+    -- Bash
+    "bashls",
 
-	-- Python
-	vim.lsp.enable("basedpyright")
-	vim.lsp.enable("ruff")
+    -- Lua
+    "emmylua_ls",
 
-	-- Typescript/Javascript/Svelte
-	vim.lsp.enable("vtsls")
-	vim.lsp.enable("svelteserver")
-  vim.lsp.enable("biome")
-  vim.lsp.enable("tailwindcss")
-  vim.lsp.enable("cssls")
+    -- Python
+    "basedpyright",
+    "ruff",
 
-  -- Typst
-	vim.lsp.enable("tinymist")
+    -- Typescript/Javascript/Svelte
+    "vtsls", 
+    "svelteserver", 
+    "biome",
+    "tailwindcss",
+    "cssls",
 
-  -- Rust
-  vim.lsp.enable("rust_analyzer")
+    -- Typst
+    "tinymist",
+
+    -- Rust
+    "rust_analyzer",
+  })
 end
 
 ---@diagnostic disable-next-line: param-type-not-match
