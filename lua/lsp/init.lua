@@ -13,6 +13,15 @@ local function enable_lsp()
 	-- Typescript/Javascript/Svelte
 	vim.lsp.enable("vtsls")
 	vim.lsp.enable("svelteserver")
+  vim.lsp.enable("biome")
+  vim.lsp.enable("tailwindcss")
+  vim.lsp.enable("cssls")
+
+  -- Typst
+	vim.lsp.enable("tinymist")
+
+  -- Rust
+  vim.lsp.enable("rust_analyzer")
 end
 
 ---@diagnostic disable-next-line: param-type-not-match

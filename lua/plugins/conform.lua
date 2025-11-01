@@ -11,8 +11,10 @@ function setup()
 			-- Conform will run the first available formatter
 			javascript = { "biome", stop_after_first = true },
 			typescript = { "prettierd" },
+			typescriptreact = { "biome" },
 			svelte = { "prettierd" },
 			json = { "prettierd" },
+			typst = { "typstyle" },
 		},
 
 		vim.keymap.set("n", "<leader>cf", function()

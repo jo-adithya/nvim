@@ -1,6 +1,7 @@
 local add, now = MiniDeps.add, MiniDeps.now
 
 add({ source = "catppuccin/nvim", name = "catppuccin" })
+add("folke/tokyonight.nvim")
 
 now(function()
 	require("catppuccin").setup({
@@ -69,8 +70,28 @@ now(function()
 	-- setup must be called before loading
 	vim.cmd.colorscheme("catppuccin")
 
-  vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { undercurl = true, sp = "Red" })
-  vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn",  { undercurl = true, sp = "Yellow" })
-  vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo",  { undercurl = true, sp = "Blue" })
-  vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint",  { undercurl = true, sp = "Green" })
+	vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { undercurl = true, sp = "Red" })
+	vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", { undercurl = true, sp = "Yellow" })
+	vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", { undercurl = true, sp = "Blue" })
+	vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", { undercurl = true, sp = "Green" })
+end)
+
+now(function()
+  require("tokyonight").setup({
+    style = "Storm",
+    transparent = true,
+    styles = {
+      comments = { italic = true },
+      keywords = { italic = true, bold = true },
+      functions = { bold = true },
+      variables = {},
+      operators = { italic = true, bold = true },
+      numbers = {},
+      booleans = {},
+      strings = {},
+      types = { bold = true },
+      conditionals = { italic = true, bold = true },
+      loops = { italic = true, bold = true },
+    },
+  })
 end)
