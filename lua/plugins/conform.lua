@@ -22,7 +22,7 @@ function setup()
 			svelte = { "prettierd" },
 			json = { "biome-check" },
 			typst = { "typstyle" },
-      sh = { "shfmt" },
+			sh = { "shfmt" },
 		},
 
 		vim.keymap.set("n", "<leader>cf", function()
