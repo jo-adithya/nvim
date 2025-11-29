@@ -1,7 +1,14 @@
 MiniDeps.add("stevearc/conform.nvim")
 
 function setup()
+  local util = require("conform.util");
+
 	require("conform").setup({
+    formatters = {
+      ["biome-check"] = {
+        args = { "check", "--write", "--unsafe", "--stdin-file-path", "$FILENAME" },
+      }
+    },
 		formatters_by_ft = {
 			lua = { "stylua" },
 			-- Conform will run multiple formatters sequentially
@@ -9,11 +16,11 @@ function setup()
 			-- You can customize some of the format options for the filetype (:help conform.format)
 			rust = { "rustfmt", lsp_format = "fallback" },
 			-- Conform will run the first available formatter
-			javascript = { "biome", stop_after_first = true },
-			typescript = { "prettierd" },
-			typescriptreact = { "biome" },
+			javascript = { "biome-check" },
+			typescript = { "biome-check" },
+			typescriptreact = { "biome-check" },
 			svelte = { "prettierd" },
-			json = { "prettierd" },
+			json = { "biome-check" },
 			typst = { "typstyle" },
       sh = { "shfmt" },
 		},
