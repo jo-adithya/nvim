@@ -22,6 +22,7 @@ function setup()
 			svelte = { "prettierd" },
 			json = { "biome-check" },
 			typst = { "typstyle" },
+      toml = { "tombi" },
 			sh = { "shfmt" },
 		},
 

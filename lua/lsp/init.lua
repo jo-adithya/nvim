@@ -26,6 +26,7 @@ local function enable_lsp()
 
     -- Rust
     "rust_analyzer",
+    "crates_lsp",
     "tombi",
   })
 end
