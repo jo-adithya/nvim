@@ -8,6 +8,7 @@ local mode_map = {
 	["V"] = "V-LINE",
 	["\22"] = "V-BLOCK",
 	["i"] = "INSERT",
+	["ic"] = "INSERT",
 	["c"] = "COMMAND",
 	["r"] = "REPLACE",
 	["r?"] = "CONFIRM",
@@ -173,4 +174,3 @@ Statusline.inactive = function()
 		location("Comment"),
 	})
 end
-

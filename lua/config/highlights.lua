@@ -11,6 +11,3 @@ vim.api.nvim_set_hl(0, "StatuslineVisual", { fg = palette.peach, italic = true, 
 vim.api.nvim_set_hl(0, "StatuslineCommand", { fg = palette.mauve, italic = true, bold = true })
 vim.api.nvim_set_hl(0, "StatuslineGit", { fg = palette.mauve, italic = true, bold = true })
 vim.api.nvim_set_hl(0, "StatuslineFileName", { fg = palette.text, italic = true })
-
-
-
