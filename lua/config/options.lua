@@ -32,6 +32,7 @@ local options = {
 	autoread = true,
 	cursorline = true,
 	inccommand = "nosplit",
+  fillchars = { vert = " ", eob = " ", diff = " ", fold = " ", foldopen = "▾", foldclose = "▸", foldsep = "│"},
 }
 
 for k, v in pairs(options) do
