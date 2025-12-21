@@ -89,7 +89,7 @@ Components.mode = function()
 	local current_mode = vim.api.nvim_get_mode().mode
 	local mode_str = mode_map[current_mode] or "UNKNOWN"
 	local hl_group = mode_hl_map[mode_str] or nil
-	return format_component(" " .. mode_str, hl_group, " ")
+	return format_component(" " .. mode_str, hl_group, " ")
 end
 
 --- Git branch component based on CWD - depends on gitsigns.nvim
@@ -131,7 +131,7 @@ Components.file_name = function(hl)
 	local ft_overrides = {
 		["copilot-chat"] = { name = "copilot", icon = "󰚩 ", icon_hl = "MiniIconsAzure" },
 		["grug-far"] = { name = "grug-far", icon = " ", icon_hl = "DiagnosticWarn" },
-		["lazy"] = { name = "lazy.nvim", icon = "󰒲 ", icon_hl = "Directory" },
+		["ministarter"] = { name = "", icon = "", icon_hl = "Directory" },
 		["mason"] = { name = "mason", icon = "󱌣 ", icon_hl = "MiniIconsAzure" },
 		["minifiles"] = { name = "files", icon = "󰝰 ", icon_hl = "Directory" },
 		["snacks_picker_input"] = { name = "picker", icon = "󰦨 ", icon_hl = "Changed" },
@@ -144,7 +144,7 @@ Components.file_name = function(hl)
 
 	local ft = vim.bo.filetype
 	if ft_overrides[ft] then
-		return format_component(ft_overrides[ft].icon, ft_overrides[ft].icon_hl, "  ", "")
+		return format_component(ft_overrides[ft].icon, ft_overrides[ft].icon_hl, " ", "")
 			.. format_component(ft_overrides[ft].name, hl, " ")
 	end
 
