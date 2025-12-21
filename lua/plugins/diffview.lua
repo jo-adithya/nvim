@@ -3,7 +3,7 @@ MiniDeps.add("sindrets/diffview.nvim")
 function setup()
   require("diffview").setup({
     enhanced_diff_hl = true,
-    show_icons = false,
+    show_icons = true,
   })
 
   -- vim.keymap.set("n", "<leader>dv", function()
