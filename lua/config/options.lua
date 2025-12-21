@@ -33,7 +33,6 @@ local options = {
 	cursorline = true,
 	inccommand = "nosplit",
 	fillchars = { vert = " ", eob = " ", diff = " ", fold = " ", foldopen = "▾", foldclose = "▸", foldsep = "│" },
-	statusline = require("config.statusline").statusline,
 }
 
 for k, v in pairs(options) do

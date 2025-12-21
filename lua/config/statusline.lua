@@ -1,7 +1,5 @@
 -- Config inspired by https://github.com/scottmckendry/Windots/blob/main/nvim/lua/core/statusline.lua
 
-local Components = {}
-
 -- Mode mappings
 local mode_map = {
 	["n"] = "NORMAL",
@@ -19,45 +17,18 @@ local mode_map = {
 }
 
 local mode_hl_map = {
-	["NORMAL"] = "Directory",
-	["VISUAL"] = "Number",
-	["V-LINE"] = "Number",
-	["V-BLOCK"] = "Number",
-	["INSERT"] = "String",
-	["COMMAND"] = "Keyword",
-	["TERMINAL"] = "Keyword",
+	["NORMAL"] = "StatuslineNormal",
+	["VISUAL"] = "StatuslineVisual",
+	["V-LINE"] = "StatuslineVisual",
+	["V-BLOCK"] = "StatuslineVisual",
+	["INSERT"] = "StatuslineInsert",
+	["COMMAND"] = "StatuslineCommand",
+	["TERMINAL"] = "StatuslineCommand",
 }
 
 ----------------------------------
 --       Helper Functions       --
 ----------------------------------
-
---- Global function for statusline component rendering. Can be called directly from the statusline
---- @param name string The name of the component to render
---- @param hl string The highlight group to use for the component
---- @return string
-function _G._statusline_component(name, hl)
-	local component_ = Components[name]
-	if component_ == nil then
-		return ""
-	end
-	return component_(hl)
-end
-
---- Generate a statusline component with optional highlight group
---- @param val string The value to render
---- @param hl string|nil The highlight group to use
---- @return string
-local function component(val, hl)
-	if val == nil or val == "" then
-		return ""
-	end
-
-	if hl == nil then
-		return "%{%v:lua._statusline_component('" .. val .. "')%}"
-	end
-	return "%{%v:lua._statusline_component('" .. val .. "', '" .. hl .. "')%}"
-end
 
 --- Format a given component value with a highlight group in the format expected by the statusline
 --- @param val string The value to format
@@ -85,17 +56,17 @@ end
 
 --- Mode component with dynamic highlights
 --- @return string
-Components.mode = function()
+function mode()
 	local current_mode = vim.api.nvim_get_mode().mode
-	local mode_str = mode_map[current_mode] or "UNKNOWN"
+	local mode_str = mode_map[current_mode] or current_mode
 	local hl_group = mode_hl_map[mode_str] or nil
-	return format_component(" " .. mode_str, hl_group, " ")
+	return format_component("▌  " .. mode_str, hl_group, " ")
 end
 
 --- Git branch component based on CWD - depends on gitsigns.nvim
 --- @param hl string The highlight group to use
 --- @return string
-Components.git_branch = function(hl)
+function git_branch(hl)
 	local branch = vim.b.gitsigns_head
 	if not branch then
 		return ""
@@ -105,13 +76,13 @@ end
 
 --- Buffer diagnostics component
 --- @return string
-Components.diagnostics = function()
+function diagnostics()
 	local errors = get_diagnostic_count("ERROR")
 	local warnings = get_diagnostic_count("WARN")
 	local hints = get_diagnostic_count("HINT")
 	local info = get_diagnostic_count("INFO")
 
-  if errors + warnings + hints + info == 0 then
+	if errors + warnings + hints + info == 0 then
 		return ""
 	end
 
@@ -127,7 +98,7 @@ end
 
 --- File name component - show the current buffer's file name and coloured icon. Depends on mini.icons.
 --- @param hl string The highlight group to use
-Components.file_name = function(hl)
+function file_name(hl)
 	local ft_overrides = {
 		["copilot-chat"] = { name = "copilot", icon = "󰚩 ", icon_hl = "MiniIconsAzure" },
 		["grug-far"] = { name = "grug-far", icon = " ", icon_hl = "DiagnosticWarn" },
@@ -166,26 +137,40 @@ end
 
 --- Progress component - show percentage of buffer scrolled
 --- @param hl string|nil The highlight group to use
-Components.progress = function(hl)
+function progress(hl)
 	return format_component("%2p%%", hl)
 end
 
 --- Location component - show current line and column
 --- @param hl string|nil The highlight group to use
-Components.location = function(hl)
+function location(hl)
 	return format_component("%l:%c", hl, "  ", " ")
 end
 
-local components = {
-	component("mode"),
-	component("git_branch", "Changed"),
-	component("file_name", "Normal"),
-	component("diagnostics"),
-	"%=", -- mark end of left alignment
-	component("progress", "Special"),
-	component("location", "Changed"),
-}
+----------------------------------
+--          Statusline          --
+----------------------------------
 
-return {
-	statusline = table.concat(components, ""),
-}
+Statusline = {}
+
+Statusline.active = function()
+	return table.concat({
+		mode(),
+		git_branch("StatuslineGit"),
+		file_name("StatuslineFileName"),
+		diagnostics(),
+		"%=", -- mark end of left alignment
+		progress("Special"),
+		location("Changed"),
+	})
+end
+
+Statusline.inactive = function()
+	return table.concat({
+		file_name("Comment"),
+		"%=", -- mark end of left alignment
+		progress("Comment"),
+		location("Comment"),
+	})
+end
+

@@ -77,21 +77,21 @@ now(function()
 end)
 
 now(function()
-  require("tokyonight").setup({
-    style = "Storm",
-    transparent = true,
-    styles = {
-      comments = { italic = true },
-      keywords = { italic = true, bold = true },
-      functions = { bold = true },
-      variables = {},
-      operators = { italic = true, bold = true },
-      numbers = {},
-      booleans = {},
-      strings = {},
-      types = { bold = true },
-      conditionals = { italic = true, bold = true },
-      loops = { italic = true, bold = true },
-    },
-  })
+	require("tokyonight").setup({
+		style = "Storm",
+		transparent = true,
+		styles = {
+			comments = { italic = true },
+			keywords = { italic = true, bold = true },
+			functions = { bold = true },
+			variables = {},
+			operators = { italic = true, bold = true },
+			numbers = {},
+			booleans = {},
+			strings = {},
+			types = { bold = true },
+			conditionals = { italic = true, bold = true },
+			loops = { italic = true, bold = true },
+		},
+	})
 end)
