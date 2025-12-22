@@ -22,7 +22,8 @@ local filetypes = {
 	"sql",
 	"svelte",
 	"typescript",
-  "typescriptreact"
+  "typescriptreact",
+  "rust",
 }
 
 function setup()
