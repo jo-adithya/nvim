@@ -136,6 +136,23 @@ function file_name(hl)
 	return format_component(icon, icon_hl, "  ", "") .. format_component(filename, hl, " ")
 end
 
+function aerial_breadcrumbs(hl)
+	local status, aerial = pcall(require, "aerial")
+	if not status then
+		MiniNotify.add("Aerial not installed", "ERROR")
+		return ""
+	end
+	local location = aerial.get_location()
+	if not location then
+		return ""
+	end
+	local result = {}
+	for i, loc in ipairs(location) do
+		result[i] = loc.icon .. " " .. loc.name
+	end
+	return format_component(table.concat(result, "   "), hl, "   ")
+end
+
 --- Progress component - show percentage of buffer scrolled
 --- @param hl string|nil The highlight group to use
 function progress(hl)
@@ -172,5 +189,20 @@ Statusline.inactive = function()
 		"%=", -- mark end of left alignment
 		progress("Comment"),
 		location("Comment"),
+	})
+end
+
+Tabline = {}
+
+Tabline.active = function()
+	return table.concat({
+		file_name("StatuslineFileName"),
+		aerial_breadcrumbs("Comment"),
+	})
+end
+
+Tabline.inactive = function()
+	return table.concat({
+		file_name("Comment"),
 	})
 end
