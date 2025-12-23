@@ -19,7 +19,6 @@ keymap("x", "˚", ":m '<-2<CR>gv=gv", opts)
 
 -- LSP
 keymap({ "n", "i" }, "<C-k>", vim.lsp.buf.signature_help, { noremap = true, silent = true, desc = "Signature Help" })
-keymap("n", "K", vim.lsp.buf.hover, opts)
 
 keymap("i", "jk", "<ESC>:w<CR>", opts)
 keymap("i", "jj", "<ESC>", opts)

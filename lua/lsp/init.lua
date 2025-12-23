@@ -3,32 +3,32 @@ local mini_capabilities = MiniCompletion.get_lsp_capabilities()
 local capabilities = vim.tbl_deep_extend("force", lsp_capabilities, mini_capabilities)
 
 local function enable_lsp()
-  vim.lsp.enable({
-    -- Bash
-    "bashls",
+	vim.lsp.enable({
+		-- Bash
+		"bashls",
 
-    -- Lua
-    "emmylua_ls",
+		-- Lua
+		"emmylua_ls",
 
-    -- Python
-    "basedpyright",
-    "ruff",
+		-- Python
+		"basedpyright",
+		"ruff",
 
-    -- Typescript/Javascript/Svelte
-    "vtsls", 
-    "svelteserver", 
-    "biome",
-    "tailwindcss",
-    "cssls",
+		-- Typescript/Javascript/Svelte
+		"vtsls",
+		"svelteserver",
+		"biome",
+		"tailwindcss",
+		"cssls",
 
-    -- Typst
-    "tinymist",
+		-- Typst
+		"tinymist",
 
-    -- Rust
-    "rust_analyzer",
-    "crates_lsp",
-    "tombi",
-  })
+		-- Rust
+		"rust_analyzer",
+		"crates_lsp",
+		"tombi",
+	})
 end
 
 ---@diagnostic disable-next-line: param-type-not-match
@@ -39,7 +39,9 @@ vim.lsp.config("*", {
 		vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Buffer declarations" })
 		vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
 		vim.keymap.set("n", "gK", vim.lsp.buf.signature_help, { desc = "View signature" })
-		vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "View definition" })
+		vim.keymap.set("n", "K", function()
+			vim.lsp.buf.hover({ border = "rounded" })
+		end, { desc = "View definition", buffer = bufnr })
 		vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Get implementation" })
 		vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, { desc = "Add workspace to folder" })
 		vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, { desc = "remove workspace from folder" })
