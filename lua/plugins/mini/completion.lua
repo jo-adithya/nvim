@@ -4,8 +4,8 @@ local function setup()
 	-- Mini Completion Setup
 	require("mini.completion").setup({
 		window = {
-			info = { border = "single" },
-			signature = { border = "single" },
+			info = { height = 25, width = 80, border = "rounded" },
+			signature = { height = 25, width = 80, border = "rounded" },
 		},
 	})
 

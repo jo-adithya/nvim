@@ -61,7 +61,7 @@ function mode()
 	local current_mode = vim.api.nvim_get_mode().mode
 	local mode_str = mode_map[current_mode] or current_mode
 	local hl_group = mode_hl_map[mode_str] or nil
-	return format_component("▌  " .. mode_str, hl_group, " ")
+	return format_component("▌  " .. mode_str, hl_group, "")
 end
 
 --- Git branch component based on CWD - depends on gitsigns.nvim
@@ -99,7 +99,8 @@ end
 
 --- File name component - show the current buffer's file name and coloured icon. Depends on mini.icons.
 --- @param hl string The highlight group to use
-function file_name(hl)
+--- @param lsep string|nil The left separator to use
+function file_name(hl, lsep)
 	local ft_overrides = {
 		["copilot-chat"] = { name = "copilot", icon = "󰚩 ", icon_hl = "MiniIconsAzure" },
 		["grug-far"] = { name = "grug-far", icon = " ", icon_hl = "DiagnosticWarn" },
@@ -116,7 +117,7 @@ function file_name(hl)
 
 	local ft = vim.bo.filetype
 	if ft_overrides[ft] then
-		return format_component(ft_overrides[ft].icon, ft_overrides[ft].icon_hl, " ", "")
+		return format_component(ft_overrides[ft].icon, ft_overrides[ft].icon_hl, lsep or " ", "")
 			.. format_component(ft_overrides[ft].name, hl, " ")
 	end
 
@@ -133,7 +134,7 @@ function file_name(hl)
 		icon_hl = fn_overrides[filename].icon_hl
 	end
 
-	return format_component(icon, icon_hl, "  ", "") .. format_component(filename, hl, " ")
+	return format_component(icon, icon_hl, lsep or "  ", "") .. format_component(filename, hl, " ")
 end
 
 function aerial_breadcrumbs(hl)
@@ -196,13 +197,13 @@ Tabline = {}
 
 Tabline.active = function()
 	return table.concat({
-		file_name("StatuslineFileName"),
+		file_name("StatuslineFileName", ""),
 		aerial_breadcrumbs("Comment"),
 	})
 end
 
 Tabline.inactive = function()
 	return table.concat({
-		file_name("Comment"),
+		file_name("Comment", ""),
 	})
 end
