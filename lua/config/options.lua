@@ -1,5 +1,6 @@
 local options = {
 	winborder = "rounded",
+	pumborder = "rounded",
 	foldcolumn = "0",
 	foldlevel = 99,
 	foldlevelstart = 99,
