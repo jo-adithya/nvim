@@ -16,6 +16,16 @@ keymap("i", "∆", "<ESC> :m .+1<CR>==i", opts)
 keymap("i", "˚", "<ESC> :m .-2<CR>==i", opts)
 keymap("x", "∆", ":m '>+1<CR>gv=gv", opts)
 keymap("x", "˚", ":m '<-2<CR>gv=gv", opts)
+keymap({ "n", "v" }, "<A-k>", ":m .-2<CR>==", opts)
+keymap({ "n", "v" }, "<A-j>", ":m .+1<CR>==", opts)
+keymap("i", "<A-j>", "<ESC> :m .+1<CR>==i", opts)
+keymap("i", "<A-k>", "<ESC> :m .-2<CR>==i", opts)
+keymap("x", "<A-j>", ":m '>+1<CR>gv=gv", opts)
+keymap("x", "<A-k>", ":m '<-2<CR>gv=gv", opts)
+
+-- Visual Mode Indent
+keymap("v", "<", "<gv", opts)
+keymap("v", ">", ">gv", opts)
 
 -- LSP
 keymap({ "n", "i" }, "<C-k>", vim.lsp.buf.signature_help, { noremap = true, silent = true, desc = "Signature Help" })

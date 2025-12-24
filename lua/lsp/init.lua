@@ -1,6 +1,7 @@
 local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
-local mini_capabilities = MiniCompletion.get_lsp_capabilities()
-local capabilities = vim.tbl_deep_extend("force", lsp_capabilities, mini_capabilities)
+-- local mini_capabilities = MiniCompletion.get_lsp_capabilities()
+-- local capabilities = vim.tbl_deep_extend("force", lsp_capabilities, mini_capabilities)
+local capabilities = lsp_capabilities
 
 local function enable_lsp()
 	vim.lsp.enable({
