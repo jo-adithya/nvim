@@ -1,7 +1,6 @@
 vim.diagnostic.config({
 	virtual_text = {
 		source = "if_many",
-	   current_line = false,
 		prefix = function(_diagnostic, index, _total)
 			return index == 1 and " " or ""
 		end,

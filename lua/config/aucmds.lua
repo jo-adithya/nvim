@@ -5,8 +5,10 @@ vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
 	desc = "Set active statusline on buf enter",
 	pattern = "*",
 	callback = function()
-		vim.opt_local.statusline = "%!v:lua.Statusline.active()"
-		vim.opt_local.tabline = "%!v:lua.Tabline.active()"
+		if vim.bo.filetype ~= "minifiles" then
+			vim.opt_local.statusline = "%!v:lua.Statusline.active()"
+			vim.opt_local.tabline = "%!v:lua.Tabline.active()"
+		end
 	end,
 })
 
@@ -15,8 +17,10 @@ vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave" }, {
 	desc = "Set inactive statusline on buf leave",
 	pattern = "*",
 	callback = function()
-		vim.opt_local.statusline = "%!v:lua.Statusline.inactive()"
-		vim.opt_local.tabline = "%!v:lua.Tabline.inactive()"
+		if vim.bo.filetype ~= "minifiles" then
+			vim.opt_local.statusline = "%!v:lua.Statusline.inactive()"
+			vim.opt_local.tabline = "%!v:lua.Tabline.inactive()"
+		end
 	end,
 })
 
