@@ -1,7 +1,11 @@
-local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
--- local mini_capabilities = MiniCompletion.get_lsp_capabilities()
--- local capabilities = vim.tbl_deep_extend("force", lsp_capabilities, mini_capabilities)
-local capabilities = lsp_capabilities
+local capabilities = require("blink.cmp").get_lsp_capabilities({
+	textDocument = {
+		foldingRange = {
+			dynamicRegistration = false,
+			lineFoldingOnly = true,
+		},
+	},
+})
 
 local function enable_lsp()
 	vim.lsp.enable({
@@ -29,6 +33,7 @@ local function enable_lsp()
 		"rust_analyzer",
 		"crates_lsp",
 		"tombi",
+		"copilot",
 	})
 end
 
