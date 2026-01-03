@@ -16,11 +16,13 @@ local function enable_lsp()
 		"emmylua_ls",
 
 		-- Python
-		"basedpyright",
+		-- "basedpyright",
+		"ty",
 		"ruff",
 
 		-- Typescript/Javascript/Svelte
-		"vtsls",
+		-- "vtsls",
+		"tsgo",
 		"svelteserver",
 		"biome",
 		"tailwindcss",
