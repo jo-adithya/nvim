@@ -14,7 +14,6 @@ local filetypes = {
 	"html",
 	"html_tags",
 	"javascript",
-  "javascriptreact",
 	"jsx",
 	"latex",
 	"lua",

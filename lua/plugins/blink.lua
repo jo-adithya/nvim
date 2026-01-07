@@ -39,13 +39,30 @@ function setup()
 		-- Default list of enabled providers defined so that you can extend it
 		-- elsewhere in your config, without redefining it, due to `opts_extend`
 		sources = {
-			default = { "lsp", "path", "snippets", "buffer", "copilot" },
+			default = { "copilot", "lsp", "path", "snippets", "buffer" },
 			providers = {
 				copilot = {
 					name = "copilot",
 					module = "blink-copilot",
 					async = true,
+          score_offset = 10,
 				},
+        snippets = {
+          min_keyword_length = 2,
+          score_offset = 4,
+        },
+        lsp = {
+          min_keyword_length = 3,
+          score_offset = 3,
+        },
+        path = {
+          min_keyword_length = 3,
+          score_offset = 2,
+        },
+        buffer = {
+          min_keyword_length = 5,
+          score_offset = 1,
+        },
 			},
 		},
 

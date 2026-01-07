@@ -21,8 +21,8 @@ local function enable_lsp()
 		"ruff",
 
 		-- Typescript/Javascript/Svelte
-		-- "vtsls",
-		"tsgo",
+		"vtsls",
+		-- "tsgo",
 		"svelteserver",
 		"biome",
 		"tailwindcss",
