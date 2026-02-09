@@ -1,6 +1,5 @@
 require("config.options")
 require("config.keymaps")
 require("config.diagnostics")
-require("config.highlights")
 require("config.statusline")
 require("config.aucmds")

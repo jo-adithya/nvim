@@ -7,6 +7,9 @@ function setup()
     formatters = {
       ["biome-check"] = {
         args = { "check", "--write", "--unsafe", "--stdin-file-path", "$FILENAME" },
+      },
+      ["typstyle"] = {
+        append_args = { "-t", "4", "-l", "100" }
       }
     },
 		formatters_by_ft = {
