@@ -27,6 +27,7 @@ local function enable_lsp()
 		"biome",
 		"tailwindcss",
 		"cssls",
+    "emmet_language_server",
 
 		-- Typst
 		"tinymist",
