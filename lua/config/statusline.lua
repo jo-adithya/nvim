@@ -137,21 +137,22 @@ function file_name(hl, lsep)
 	return format_component(icon, icon_hl, lsep or "  ", "") .. format_component(filename, hl, " ")
 end
 
-function aerial_breadcrumbs(hl)
-	local status, aerial = pcall(require, "aerial")
+function breadcrumbs(hl)
+	local status, outline = pcall(require, "outline")
 	if not status then
-		MiniNotify.add("Aerial not installed", "ERROR")
+		MiniNotify.add("Outline.nvim not installed", "ERROR")
 		return ""
 	end
-	local location = aerial.get_location()
-	if not location then
-		return ""
-	end
-	local result = {}
-	for i, loc in ipairs(location) do
-		result[i] = loc.icon .. " " .. loc.name
-	end
-	return format_component(table.concat(result, "   "), hl, "   ")
+	return format_component(outline.get_breadcrumb() or "", hl, "   ")
+	-- local location = outline.get_location()
+	-- if not location then
+	-- 	return ""
+	-- end
+	-- local result = {}
+	-- for i, loc in ipairs(location) do
+	-- 	result[i] = loc.icon .. " " .. loc.name
+	-- end
+	-- return format_component(table.concat(result, "   "), hl, "   ")
 end
 
 --- Progress component - show percentage of buffer scrolled
@@ -198,7 +199,7 @@ Tabline = {}
 Tabline.active = function()
 	return table.concat({
 		file_name("StatuslineFileName", ""),
-		aerial_breadcrumbs("Comment"),
+		breadcrumbs("Comment"),
 	})
 end
 
