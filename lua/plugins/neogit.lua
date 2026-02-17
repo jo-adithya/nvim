@@ -29,6 +29,12 @@ function setup()
 			item = { "", "" },
 			hunk = { "", "" },
 		},
+    mappings = {
+      status = {
+        ["<C-s>"] = "StageUnstaged",
+        ["S"] = "StageAll",
+      }
+    }
 	})
 
 	local wk = require("which-key")
