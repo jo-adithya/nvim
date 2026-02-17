@@ -1,17 +1,17 @@
 MiniDeps.add("stevearc/conform.nvim")
 
 function setup()
-  local util = require("conform.util");
+	local util = require("conform.util")
 
 	require("conform").setup({
-    formatters = {
-      ["biome-check"] = {
-        args = { "check", "--write", "--unsafe", "--stdin-file-path", "$FILENAME" },
-      },
-      ["typstyle"] = {
-        append_args = { "-t", "4", "-l", "100" }
-      }
-    },
+		formatters = {
+			["biome-check"] = {
+				args = { "check", "--write", "--unsafe", "--stdin-file-path", "$FILENAME" },
+			},
+			["typstyle"] = {
+				append_args = { "-t", "4", "-l", "100" },
+			},
+		},
 		formatters_by_ft = {
 			lua = { "stylua" },
 			-- Conform will run multiple formatters sequentially
@@ -25,7 +25,7 @@ function setup()
 			svelte = { "prettierd" },
 			json = { "biome-check" },
 			typst = { "typstyle" },
-      toml = { "tombi" },
+			toml = { "tombi" },
 			sh = { "shfmt" },
 		},
 
