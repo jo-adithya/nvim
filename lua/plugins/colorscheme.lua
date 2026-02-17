@@ -5,40 +5,41 @@ add("olimorris/onedarkpro.nvim")
 -- add("folke/tokyonight.nvim")
 
 MiniDeps.later(function()
-  vim.cmd("colorscheme onedark")
+	vim.cmd("colorscheme onedark")
 end)
 
 now(function()
-  require("onedarkpro").setup({
-    colors = {
-      blue = "#82B0FA",
-      cyan = "#9DE0D6",
-      purple = "#C096FF",
-    },
-    styles = {
-      comments = "italic",
-      keywords = "bold,italic",
-      functions = "bold,italic",
-      conditionals = "bold,italic",
-      operators = "bold",
-      methods = "bold,italic",
-    },
-    options = {
-      transparency = true,
-    },
-    highlights = {
-      StatuslineNormal = { fg = "${blue}", italic = true, bold = true },
-      StatuslineInsert = { fg = "${green}", italic = true, bold = true },
-      StatuslineVisual = { fg = "${orange}", italic = true, bold = true },
-      StatuslineCommand = { fg = "${purple}", italic = true, bold = true },
-      StatuslineGit = { fg = "${purple}", italic = true, bold = true },
-      StatuslineFileName = { fg = "${fg}", italic = true },
-      ["@lsp.typemod.function.defaultLibrary"] = { fg = { dark = "#A6A8F5" } },
-      ["@lsp.typemod.function.defaultLibrary.lua"] = { link = "@lsp.typemod.function.defaultLibrary" },
-    }
-  })
+	require("onedarkpro").setup({
+		colors = {
+			blue = "#82B0FA",
+			cyan = "#9DE0D6",
+			purple = "#C096FF",
+		},
+		styles = {
+			comments = "italic",
+			keywords = "bold,italic",
+			functions = "bold,italic",
+			conditionals = "bold,italic",
+			operators = "bold",
+			methods = "bold,italic",
+		},
+		options = {
+			transparency = true,
+		},
+		highlights = {
+			StatuslineNormal = { fg = "${blue}", italic = true, bold = true },
+			StatuslineInsert = { fg = "${green}", italic = true, bold = true },
+			StatuslineVisual = { fg = "${orange}", italic = true, bold = true },
+			StatuslineCommand = { fg = "${purple}", italic = true, bold = true },
+			StatuslineGit = { fg = "${purple}", italic = true, bold = true },
+			StatuslineFileName = { fg = "${fg}", italic = true },
+			["@lsp.typemod.function.defaultLibrary"] = { fg = { dark = "#A6A8F5" } },
+			["@lsp.typemod.function.defaultLibrary.lua"] = { link = "@lsp.typemod.function.defaultLibrary" },
+			WhichKeyIcon = { fg = "${cyan}", underline = false },
+		},
+	})
 
-  vim.cmd.colorscheme("onedark")
+	vim.cmd.colorscheme("onedark")
 end)
 
 -- now(function()
