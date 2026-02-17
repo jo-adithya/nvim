@@ -23,6 +23,7 @@ local filetypes = {
 	"typescript",
   "typescriptreact",
   "rust",
+  "ron",
 }
 
 function setup()
