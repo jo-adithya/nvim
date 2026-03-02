@@ -1,19 +1,26 @@
 local add, now = MiniDeps.add, MiniDeps.now
 
--- add({ source = "catppuccin/nvim", name = "catppuccin" })
 add("olimorris/onedarkpro.nvim")
--- add("folke/tokyonight.nvim")
-
-MiniDeps.later(function()
-	vim.cmd("colorscheme onedark")
-end)
 
 now(function()
 	require("onedarkpro").setup({
 		colors = {
-			blue = "#82B0FA",
-			cyan = "#9DE0D6",
-			purple = "#C096FF",
+      dark = {
+        blue = "#82B0FA",
+        cyan = "#9DE0D6",
+        purple = "#C096FF",
+      },
+      light = {
+        blue = "#4583ef",
+        purple = "#9479e0",
+        red = "#d12934",
+        cyan = "#85d3c5",
+        orange = "#a3431d",
+        yellow = "#b57614",
+        green = "#62a552",
+        bg = "#ede6c2",
+        line_number = "#a89984"
+      },
 		},
 		styles = {
 			comments = "italic",
@@ -39,7 +46,7 @@ now(function()
 		},
 	})
 
-	vim.cmd.colorscheme("onedark")
+	vim.cmd("colorscheme onedark")
 end)
 
 -- now(function()

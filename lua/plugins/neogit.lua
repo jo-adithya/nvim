@@ -11,7 +11,7 @@ function setup()
 		graph_style = "kitty",
 		integrations = {
 			codediff = true,
-			mini_pick = true,
+			fzf_lua = true,
 		},
 		diff_viewer = "codediff",
 		file_watcher = {
@@ -33,12 +33,15 @@ function setup()
       status = {
         ["<C-s>"] = "StageUnstaged",
         ["S"] = "StageAll",
+        [" "] = "Stage",
+        ["s"] = "Stage",
       }
     }
 	})
 
 	local wk = require("which-key")
 	wk.add({
+    { "<C-g>", "<cmd>Neogit<cr>", desc = "Neogit" },
 		{ "<leader>g", group = "Git", icon = { icon = "", color = "orange" } },
 		{ "<leader>gg", "<cmd>Neogit<cr>", desc = "Neogit" },
 		{ "<leader>gc", "<cmd>Neogit commit<cr>", desc = "Git commit" },

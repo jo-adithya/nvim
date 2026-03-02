@@ -17,11 +17,13 @@ local function enable_lsp()
 
 		-- Python
 		-- "basedpyright",
-		"ty",
+		-- "ty",
+    "pyrefly",
 		"ruff",
 
 		-- Typescript/Javascript/Svelte
-		"vtsls",
+    "ts_ls",
+		-- "vtsls",
 		-- "tsgo",
 		"svelteserver",
 		"biome",
@@ -45,8 +47,6 @@ vim.lsp.config("*", {
 	capabilities = capabilities,
 	on_attach = function(client, bufnr)
 		-- keymaps
-		vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Buffer declarations" })
-		vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
 		vim.keymap.set("n", "gK", vim.lsp.buf.signature_help, { desc = "View signature" })
 		vim.keymap.set("n", "K", function()
 			vim.lsp.buf.hover({ border = "rounded" })

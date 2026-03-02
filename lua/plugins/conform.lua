@@ -22,11 +22,12 @@ function setup()
 			javascript = { "biome-check" },
 			typescript = { "biome-check" },
 			typescriptreact = { "biome-check" },
-			svelte = { "prettierd" },
+			svelte = { "biome-check" },
 			json = { "biome-check" },
 			typst = { "typstyle" },
 			toml = { "tombi" },
 			sh = { "shfmt" },
+      yaml = { "yq" },
 		},
 
 		vim.keymap.set("n", "<leader>cf", function()
