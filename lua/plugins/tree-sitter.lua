@@ -15,7 +15,7 @@ local filetypes = {
 	"html_tags",
 	"javascript",
 	"jsx",
-	"latex",
+	"typst",
 	"lua",
 	"python",
 	"sql",
