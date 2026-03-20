@@ -22,9 +22,9 @@ local function enable_lsp()
 		"ruff",
 
 		-- Typescript/Javascript/Svelte
-    "ts_ls",
+    -- "ts_ls",
 		-- "vtsls",
-		-- "tsgo",
+		"tsgo",
 		"svelteserver",
 		"biome",
 		"tailwindcss",
@@ -38,7 +38,6 @@ local function enable_lsp()
 		"rust_analyzer",
 		"crates_lsp",
 		"tombi",
-		"copilot",
 	})
 end
 

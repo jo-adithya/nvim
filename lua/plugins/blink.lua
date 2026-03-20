@@ -1,7 +1,7 @@
 MiniDeps.add({
 	source = "saghen/blink.cmp",
 	depends = { "rafamadriz/friendly-snippets", "fang2hou/blink-copilot" },
-	checkout = "v1.8.0",
+	checkout = "v1.10.1",
 })
 
 function setup()
@@ -27,7 +27,10 @@ function setup()
 		},
 
 		completion = {
-			documentation = { auto_show = true },
+			documentation = { auto_show = true, auto_show_delay_ms = 200 },
+      ghost_text = {
+        enabled = true,
+      },
 			list = {
 				selection = {
 					preselect = false,
@@ -41,27 +44,11 @@ function setup()
 		sources = {
 			default = { "copilot", "lsp", "path", "snippets", "buffer" },
 			providers = {
-				copilot = {
-					name = "copilot",
-					module = "blink-copilot",
-					async = true,
-          score_offset = 10,
-				},
-        snippets = {
-          min_keyword_length = 2,
-          score_offset = 4,
-        },
-        lsp = {
-          min_keyword_length = 3,
-          score_offset = 3,
-        },
-        path = {
-          min_keyword_length = 3,
-          score_offset = 2,
-        },
-        buffer = {
-          min_keyword_length = 5,
-          score_offset = 1,
+        copilot = {
+          name = "copilot",
+          module = "blink-copilot",
+          score_offset = 100,
+          async = true,
         },
 			},
 		},

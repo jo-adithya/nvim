@@ -21,7 +21,7 @@ local filetypes = {
 	"sql",
 	"svelte",
 	"typescript",
-  "typescriptreact",
+	"tsx",
   "rust",
   "ron",
 }
