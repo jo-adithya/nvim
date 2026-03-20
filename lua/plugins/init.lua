@@ -1,4 +1,3 @@
-
 function load_plugins(plugin_path)
 	local plugin_dir = vim.fn.stdpath("config") .. "/lua/plugins/" .. plugin_path
 	for _, file in ipairs(vim.fn.readdir(plugin_dir)) do

@@ -14,8 +14,8 @@ MiniDeps.later(function()
 		icons = {
 			separator = " ",
 			group = "  ",
-      -- mappings = false,
-      -- colors = false,
+			-- mappings = false,
+			-- colors = false,
 		},
 	})
 	wk.add({

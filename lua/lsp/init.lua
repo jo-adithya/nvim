@@ -18,18 +18,18 @@ local function enable_lsp()
 		-- Python
 		-- "basedpyright",
 		-- "ty",
-    "pyrefly",
+		"pyrefly",
 		"ruff",
 
 		-- Typescript/Javascript/Svelte
-    -- "ts_ls",
+		-- "ts_ls",
 		-- "vtsls",
 		"tsgo",
 		"svelteserver",
 		"biome",
 		"tailwindcss",
 		"cssls",
-    "emmet_language_server",
+		"emmet_language_server",
 
 		-- Typst
 		"tinymist",

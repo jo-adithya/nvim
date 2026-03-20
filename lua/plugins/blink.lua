@@ -28,9 +28,9 @@ function setup()
 
 		completion = {
 			documentation = { auto_show = true, auto_show_delay_ms = 200 },
-      ghost_text = {
-        enabled = true,
-      },
+			ghost_text = {
+				enabled = true,
+			},
 			list = {
 				selection = {
 					preselect = false,
@@ -44,12 +44,12 @@ function setup()
 		sources = {
 			default = { "copilot", "lsp", "path", "snippets", "buffer" },
 			providers = {
-        copilot = {
-          name = "copilot",
-          module = "blink-copilot",
-          score_offset = 100,
-          async = true,
-        },
+				copilot = {
+					name = "copilot",
+					module = "blink-copilot",
+					score_offset = 100,
+					async = true,
+				},
 			},
 		},
 

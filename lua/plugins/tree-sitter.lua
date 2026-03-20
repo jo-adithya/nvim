@@ -4,7 +4,7 @@ MiniDeps.add({
 })
 
 local filetypes = {
-  "css",
+	"css",
 	"fish",
 	"git_config",
 	"git_rebase",
@@ -22,8 +22,8 @@ local filetypes = {
 	"svelte",
 	"typescript",
 	"tsx",
-  "rust",
-  "ron",
+	"rust",
+	"ron",
 }
 
 function setup()

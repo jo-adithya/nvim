@@ -6,7 +6,7 @@ MiniDeps.later(function()
 		outline_window = {
 			show_cursorline = true,
 			hide_cursor = true,
-      show_numbers = false,
+			show_numbers = false,
 		},
 		preview_window = {
 			auto_preview = true,
@@ -18,8 +18,8 @@ MiniDeps.later(function()
 			hover_symbol = "K",
 			fold = "zc",
 			unfold = "zo",
-      goto_location = "<S-CR>",
-      goto_and_close = "<CR>",
+			goto_location = "<S-CR>",
+			goto_and_close = "<CR>",
 		},
 		symbols = {
 			icons = {

@@ -29,19 +29,19 @@ function setup()
 			item = { "", "" },
 			hunk = { "", "" },
 		},
-    mappings = {
-      status = {
-        ["<C-s>"] = "StageUnstaged",
-        ["S"] = "StageAll",
-        [" "] = "Stage",
-        ["s"] = "Stage",
-      }
-    }
+		mappings = {
+			status = {
+				["<C-s>"] = "StageUnstaged",
+				["S"] = "StageAll",
+				[" "] = "Stage",
+				["s"] = "Stage",
+			},
+		},
 	})
 
 	local wk = require("which-key")
 	wk.add({
-    { "<C-g>", "<cmd>Neogit<cr>", desc = "Neogit" },
+		{ "<C-g>", "<cmd>Neogit<cr>", desc = "Neogit" },
 		{ "<leader>g", group = "Git", icon = { icon = "", color = "orange" } },
 		{ "<leader>gg", "<cmd>Neogit<cr>", desc = "Neogit" },
 		{ "<leader>gc", "<cmd>Neogit commit<cr>", desc = "Git commit" },

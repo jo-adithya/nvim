@@ -27,7 +27,7 @@ function setup()
 			typst = { "typstyle" },
 			toml = { "tombi" },
 			sh = { "shfmt" },
-      yaml = { "yq" },
+			yaml = { "yq" },
 		},
 
 		vim.keymap.set("n", "<leader>cf", function()

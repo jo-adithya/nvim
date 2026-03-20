@@ -4,7 +4,7 @@ function setup()
 	require("mini.files").setup({
 		content = {
 			prefix = function(fs_entry)
-        local icon, hl = MiniFiles.default_prefix(fs_entry)
+				local icon, hl = MiniFiles.default_prefix(fs_entry)
 				return " " .. icon .. " ", hl
 			end,
 		},
