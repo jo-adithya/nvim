@@ -24,6 +24,9 @@ local filetypes = {
 	"tsx",
 	"rust",
 	"ron",
+  "markdown",
+  "markdown_inline",
+  "yaml"
 }
 
 function setup()

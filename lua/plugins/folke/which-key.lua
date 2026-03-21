@@ -1,6 +1,6 @@
 MiniDeps.add("folke/which-key.nvim")
 
-MiniDeps.later(function()
+MiniDeps.now(function()
 	local wk = require("which-key")
 	wk.setup({
 		preset = "modern",
