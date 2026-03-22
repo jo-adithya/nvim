@@ -1,51 +1,39 @@
-MiniDeps.add("zbirenbaum/copilot.lua")
-
-local copilot_loaded = false
 local copilot_enabled = false
 
-local function setup()
-	if copilot_loaded then
-		return
-	end
+local function set_blink_state(enabled)
+	vim.g.copilot_enabled = enabled and 1 or 0
+end
 
-	require("copilot").setup({
-		panel = {
-			enabled = false,
-		},
-		suggestion = {
-			enabled = false,
-		},
-		filetypes = {
-			markdown = true,
-			help = true,
-		},
-		should_attach = function()
-			return copilot_enabled
-		end,
-	})
-
-	copilot_loaded = true
+local function copilot_clients()
+	return vim.lsp.get_clients({ name = "copilot" })
 end
 
 local function enable()
 	copilot_enabled = true
-	setup()
+	set_blink_state(true)
+
+	pcall(vim.lsp.enable, "copilot")
 end
 
 local function disable()
 	copilot_enabled = false
+	set_blink_state(false)
 
-	pcall(function()
-		require("copilot.suggestion").dismiss()
-	end)
+	for _, client in ipairs(copilot_clients()) do
+		if not client:is_stopped() then
+			client:stop(true)
+		end
+	end
 end
 
-vim.api.nvim_create_user_command("CopilotEnable", enable, { desc = "Enable Copilot" })
-vim.api.nvim_create_user_command("CopilotDisable", disable, { desc = "Disable Copilot" })
+vim.g.copilot_enabled = 0
+
+vim.api.nvim_create_user_command("CopilotEnable", enable, { desc = "Enable Copilot LSP" })
+vim.api.nvim_create_user_command("CopilotDisable", disable, { desc = "Disable Copilot LSP" })
 vim.api.nvim_create_user_command("CopilotToggle", function()
 	if copilot_enabled then
 		disable()
 	else
 		enable()
 	end
-end, { desc = "Toggle Copilot" })
+end, { desc = "Toggle Copilot LSP" })
