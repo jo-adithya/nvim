@@ -32,7 +32,7 @@ function setup()
 			enabled = true,
 			folder = "01-daily-notes",
 			date_format = "YYYY-MM-DD",
-			template = "99-meta/templates/daily-note.md",
+			template = "daily-note.md",
 			default_tags = {},
 		},
 		workspaces = {
