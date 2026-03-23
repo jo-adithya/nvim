@@ -41,9 +41,21 @@ function setup()
 
 	local wk = require("which-key")
 	wk.add({
-		{ "<C-g>", "<cmd>Neogit<cr>", desc = "Neogit" },
+		{
+			"<C-g>",
+			function()
+				neogit.open({ cwd = vim.fn.expand("%:p:h") })
+			end,
+			desc = "Neogit",
+		},
 		{ "<leader>g", group = "Git", icon = { icon = "", color = "orange" } },
-		{ "<leader>gg", "<cmd>Neogit<cr>", desc = "Neogit" },
+		{
+			"<leader>gg",
+			function()
+				neogit.open({ cwd = vim.fn.expand("%:p:h") })
+			end,
+			desc = "Neogit",
+		},
 		{ "<leader>gc", "<cmd>Neogit commit<cr>", desc = "Git commit" },
 		{
 			"<leader>gb",

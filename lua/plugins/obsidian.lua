@@ -38,7 +38,7 @@ function setup()
 		workspaces = {
 			{
 				name = "ideaverse",
-				path = "~/Documents/ideaverse",
+				path = "~/documents/ideaverse",
 			},
 		},
 	})
