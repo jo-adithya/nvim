@@ -29,8 +29,8 @@ local filetypes = {
 	"markdown",
 	"markdown_inline",
 	"yaml",
-  "vim",
-  "vimdoc",
+	"vim",
+	"vimdoc",
 }
 
 require("nvim-treesitter").setup()

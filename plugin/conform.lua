@@ -1,41 +1,41 @@
+vim.pack.add({ "https://github.com/stevearc/conform.nvim" })
+
+-- Setup --
+
 vim.api.nvim_create_autocmd("BufEnter", {
 	once = true,
 	callback = function()
-		vim.pack.add({"https://github.com/stevearc/conform.nvim"})
+		local util = require("conform.util")
+		require("conform").setup({
+			formatters = {
+				["biome-check"] = {
+					args = { "check", "--write", "--unsafe", "--stdin-file-path", "$FILENAME" },
+				},
+				["typstyle"] = {
+					append_args = { "-t", "4", "-l", "100" },
+				},
+			},
+			formatters_by_ft = {
+				lua = { "stylua" },
+				-- Conform will run multiple formatters sequentially
+				python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
+				-- You can customize some of the format options for the filetype (:help conform.format)
+				rust = { "rustfmt", lsp_format = "fallback" },
+				-- Conform will run the first available formatter
+				javascript = { "biome-check" },
+				typescript = { "biome-check" },
+				typescriptreact = { "biome-check" },
+				svelte = { "biome-check" },
+				json = { "biome-check" },
+				typst = { "typstyle" },
+				toml = { "tombi" },
+				sh = { "shfmt" },
+				yaml = { "yq" },
+			},
 
-    -- Setup --
-
-    local util = require("conform.util")
-    require("conform").setup({
-      formatters = {
-        ["biome-check"] = {
-          args = { "check", "--write", "--unsafe", "--stdin-file-path", "$FILENAME" },
-        },
-        ["typstyle"] = {
-          append_args = { "-t", "4", "-l", "100" },
-        },
-      },
-      formatters_by_ft = {
-        lua = { "stylua" },
-        -- Conform will run multiple formatters sequentially
-        python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
-        -- You can customize some of the format options for the filetype (:help conform.format)
-        rust = { "rustfmt", lsp_format = "fallback" },
-        -- Conform will run the first available formatter
-        javascript = { "biome-check" },
-        typescript = { "biome-check" },
-        typescriptreact = { "biome-check" },
-        svelte = { "biome-check" },
-        json = { "biome-check" },
-        typst = { "typstyle" },
-        toml = { "tombi" },
-        sh = { "shfmt" },
-        yaml = { "yq" },
-      },
-
-      vim.keymap.set("n", "<leader>cf", function()
-        require("conform").format()
-      end, { desc = "Format document" }),
-    })
+			vim.keymap.set("n", "<leader>cf", function()
+				require("conform").format()
+			end, { desc = "Format document" }),
+		})
 	end,
 })

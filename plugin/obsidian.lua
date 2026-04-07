@@ -1,8 +1,8 @@
+vim.pack.add({ "https://github.com/obsidian-nvim/obsidian.nvim" })
+
+-- Setup --
+
 vim.schedule(function()
-	vim.pack.add({"https://github.com/obsidian-nvim/obsidian.nvim"})
-
-  -- Setup --
-
 	require("obsidian").setup({
 		legacy_commands = false,
 		templates = {
@@ -29,7 +29,7 @@ vim.schedule(function()
 		},
 	})
 
-  -- Keymaps --
+	-- Keymaps --
 
 	local wk = require("which-key")
 	wk.add({
