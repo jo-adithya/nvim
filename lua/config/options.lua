@@ -34,6 +34,9 @@ local options = {
 	cursorline = true,
 	inccommand = "nosplit",
 	fillchars = { vert = " ", eob = " ", diff = " ", fold = " ", foldopen = "▾", foldclose = "▸", foldsep = "│" },
+	cmdheight = 0,
+	laststatus = 3,
+  showtabline = 0,
 }
 
 for k, v in pairs(options) do

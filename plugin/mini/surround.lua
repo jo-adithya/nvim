@@ -1,6 +1,10 @@
-MiniDeps.add("nvim-mini/mini.surround")
+vim.api.nvim_create_autocmd("BufEnter", {
+	once = true,
+	callback = function()
+		vim.pack.add({"https://github.com/nvim-mini/mini.surround"})
 
-function setup()
+    -- Setup --
+
 	require("mini.surround").setup({
 		mappings = {
 			add = "gsa", -- Add surrounding in Normal and Visual modes
@@ -11,6 +15,5 @@ function setup()
 			replace = "gsr", -- Replace surrounding
 		},
 	})
-end
-
-MiniDeps.later(setup)
+	end,
+})

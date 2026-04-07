@@ -1,11 +1,13 @@
-MiniDeps.add({
-	source = "NeogitOrg/neogit",
-	depends = {
-		"nvim-lua/plenary.nvim",
-	},
-})
+vim.api.nvim_create_autocmd("BufEnter", {
+	once = true,
+	callback = function()
+		vim.pack.add({
+			"https://github.com/nvim-lua/plenary.nvim",
+			"https://github.com/NeogitOrg/neogit",
+		})
 
-function setup()
+  -- Setup --
+
 	local neogit = require("neogit")
 	neogit.setup({
 		graph_style = "kitty",
@@ -86,6 +88,8 @@ function setup()
 			desc = "Git push",
 		},
 	})
-end
+	end,
+})
 
-MiniDeps.later(setup)
+function setup()
+end

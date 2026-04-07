@@ -1,12 +1,3 @@
-local capabilities = require("blink.cmp").get_lsp_capabilities({
-	textDocument = {
-		foldingRange = {
-			dynamicRegistration = false,
-			lineFoldingOnly = true,
-		},
-	},
-})
-
 local function enable_lsp()
 	vim.lsp.enable({
 		-- Bash
@@ -23,8 +14,8 @@ local function enable_lsp()
 
 		-- Typescript/Javascript/Svelte
 		-- "ts_ls",
-		-- "vtsls",
-		"tsgo",
+		"vtsls",
+		-- "tsgo",
 		"svelteserver",
 		"biome",
 		"tailwindcss",

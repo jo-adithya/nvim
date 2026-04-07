@@ -97,6 +97,14 @@ function diagnostics()
 	return " " .. table.concat(components, "") .. " "
 end
 
+function macro_recording()
+	local reg = vim.fn.reg_recording()
+	if reg == "" then
+		return ""
+	end
+	return format_component("󰐾 " .. reg, "DiagnosticError")
+end
+
 --- File name component - show the current buffer's file name and coloured icon. Depends on mini.icons.
 --- @param hl string The highlight group to use
 --- @param lsep string|nil The left separator to use
@@ -107,6 +115,7 @@ function file_name(hl, lsep)
 		["ministarter"] = { name = "", icon = "", icon_hl = "Directory" },
 		["mason"] = { name = "mason", icon = "󱌣 ", icon_hl = "MiniIconsAzure" },
 		["minifiles"] = { name = "files", icon = "󰝰 ", icon_hl = "Directory" },
+		["yazi"] = { name = "files", icon = "󰝰 ", icon_hl = "Directory" },
 		["snacks_picker_input"] = { name = "picker", icon = "󰦨 ", icon_hl = "Changed" },
 	}
 
@@ -115,32 +124,37 @@ function file_name(hl, lsep)
 		["lazygit"] = { icon = " ", icon_hl = "Changed" },
 	}
 
-	local ft = vim.bo.filetype
+	local winid = vim.g.statusline_winid or vim.g.winbar_winid
+	local bufnr = vim.api.nvim_win_get_buf(winid)
+
+	-- Filetype overrides
+	local ft = vim.bo[bufnr].filetype
 	if ft_overrides[ft] then
 		return format_component(ft_overrides[ft].icon, ft_overrides[ft].icon_hl, lsep or " ", "")
 			.. format_component(ft_overrides[ft].name, hl, " ")
 	end
 
-	local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":t")
+	-- Filename overrides
+	local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":t")
 	if filename == "" then
 		return ""
 	end
-
-	local icon, icon_hl = require("mini.icons").get("file", filename)
-
-	-- Override or set custom icons
 	if fn_overrides[filename] then
 		icon = fn_overrides[filename].icon
 		icon_hl = fn_overrides[filename].icon_hl
 	end
 
-	return format_component(icon, icon_hl, lsep or "  ", "") .. format_component(filename, hl, " ")
+	local icon, icon_hl = require("mini.icons").get("file", filename)
+	local modified = vim.bo[bufnr].modified and " " or ""
+	local readonly = vim.bo[bufnr].readonly and " 󰌾" or ""
+	return format_component(icon, icon_hl, lsep or "  ", "")
+		.. format_component(filename .. modified .. readonly, hl, " ")
 end
 
 function breadcrumbs(hl)
 	local status, outline = pcall(require, "outline")
 	if not status then
-		MiniNotify.add("Outline.nvim not installed", "ERROR")
+		vim.notify("Outline.nvim not installed", vim.log.levels.ERROR)
 		return ""
 	end
 	return format_component(outline.get_breadcrumb() or "", hl, "   ")
@@ -177,9 +191,10 @@ Statusline.active = function()
 	return table.concat({
 		mode(),
 		git_branch("StatuslineGit"),
-		file_name("StatuslineFileName"),
+		-- file_name("StatuslineFileName"),
 		diagnostics(),
 		"%=", -- mark end of left alignment
+		macro_recording(),
 		progress("Special"),
 		location("Changed"),
 	})
@@ -187,7 +202,7 @@ end
 
 Statusline.inactive = function()
 	return table.concat({
-		file_name("Comment"),
+		-- file_name("Comment"),
 		"%=", -- mark end of left alignment
 		progress("Comment"),
 		location("Comment"),
@@ -196,15 +211,41 @@ end
 
 Tabline = {}
 
-Tabline.active = function()
+Tabline.active = function() end
+
+Tabline.inactive = function() end
+
+Winbar = {}
+
+Winbar.active = function()
 	return table.concat({
 		file_name("StatuslineFileName", ""),
 		breadcrumbs("Comment"),
 	})
 end
 
-Tabline.inactive = function()
+Winbar.inactive = function()
 	return table.concat({
 		file_name("Comment", ""),
 	})
 end
+
+Winbar.build = function()
+	local is_active = vim.g.statusline_winid == vim.api.nvim_get_current_win()
+	if is_active then
+		return Winbar.active()
+	end
+	return Winbar.inactive()
+end
+
+vim.go.winbar = "%!v:lua.Winbar.build()"
+vim.go.statusline = "%!v:lua.Statusline.active()"
+
+vim.api.nvim_create_autocmd({ "LspAttach", "LspDetach", "DiagnosticChanged" }, {
+	group = vim.api.nvim_create_augroup("StatuslineUpdate", { clear = true }),
+	pattern = "*",
+	callback = vim.schedule_wrap(function()
+		vim.cmd("redrawstatus")
+	end),
+	desc = "Update statusline/winbar on LSP and diagnostics update",
+})

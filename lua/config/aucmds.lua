@@ -1,47 +1,4 @@
-local group = vim.api.nvim_create_augroup("Statusline", { clear = true })
-
-vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
-	group = group,
-	desc = "Set active statusline on buf enter",
-	pattern = "*",
-	callback = function()
-		if vim.bo.filetype ~= "minifiles" then
-			vim.opt_local.statusline = "%!v:lua.Statusline.active()"
-			vim.opt_local.tabline = "%!v:lua.Tabline.active()"
-		end
-	end,
-})
-
-vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave" }, {
-	group = group,
-	desc = "Set inactive statusline on buf leave",
-	pattern = "*",
-	callback = function()
-		if vim.bo.filetype ~= "minifiles" then
-			vim.opt_local.statusline = "%!v:lua.Statusline.inactive()"
-			vim.opt_local.tabline = "%!v:lua.Tabline.inactive()"
-		end
-	end,
-})
-
-local timer = nil
-vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI", "CursorMoved", "CursorMovedI" }, {
-	group = group,
-	desc = "Refresh statusline on LSP events",
-	pattern = "*",
-	callback = function()
-		if timer then
-			vim.fn.timer_stop(timer)
-		end
-		timer = vim.fn.timer_start(
-			100,
-			vim.schedule_wrap(function()
-				vim.cmd("redrawtabline")
-			end)
-		)
-	end,
-})
-
+-- LSP
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(args)
 		local bufnr = args.buf
@@ -59,6 +16,34 @@ vim.api.nvim_create_autocmd("LspAttach", {
 				vim.lsp.inline_completion.select,
 				{ desc = "LSP: switch inline completion", buffer = bufnr }
 			)
+		end
+	end,
+})
+
+vim.api.nvim_create_autocmd("LspProgress", {
+	callback = function(ev)
+		local value = ev.data.params.value
+
+		vim.api.nvim_echo({ { value.message or "done" } }, false, {
+			id = "lsp." .. ev.data.client_id,
+			kind = "progress",
+			-- source = "vim.lsp",
+			title = value.title,
+			status = value.kind ~= "end" and "running" or "success",
+			percent = value.percentage,
+		})
+	end,
+})
+
+-- Update tree sitter parsers whenever 'nvim-treesitter' updates
+vim.api.nvim_create_autocmd("PackChanged", {
+	callback = function(ev)
+		local name, kind = ev.data.spec.name, ev.data.kind
+		if name == "nvim-treesitter" and kind == "update" then
+			if not ev.data.active then
+				vim.cmd.packadd("nvim-treesitter")
+			end
+			vim.cmd("TSUpdate")
 		end
 	end,
 })

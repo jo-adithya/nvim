@@ -1,6 +1,11 @@
-MiniDeps.add("MeanderingProgrammer/render-markdown.nvim")
+vim.api.nvim_create_autocmd("FileType", {
+	once = true,
+	pattern = "markdown",
+	callback = function()
+		vim.pack.add({"https://github.com/MeanderingProgrammer/render-markdown.nvim"})
 
-function setup()
+    -- Setup --
+
 	require("render-markdown").setup({
 		completions = { lsp = { enabled = true } },
 		code = {
@@ -10,26 +15,28 @@ function setup()
 		},
 		heading = {
 			border = true,
-      icons = { '# ', '## ', '### ', '#### ', '##### ', '###### ' },
-      left_pad = 2,
+			icons = { "# ", "## ", "### ", "#### ", "##### ", "###### " },
+			left_pad = 2,
 			-- border_virtual = true,
 		},
 		checkbox = {
 			unchecked = { icon = "󱥸 " },
 			checked = { icon = " " },
-      left_pad = 1,
-      right_pad = 2,
+			left_pad = 1,
+			right_pad = 2,
 		},
 		dash = {
 			width = 20,
 			left_margin = 0.5,
 		},
 		pipe_table = { preset = "double", alignment_indicator = "┅" },
-    bullet = {
-      left_pad = 1,
-      right_pad = 2,
-    }
+		bullet = {
+			left_pad = 1,
+			right_pad = 2,
+		},
 	})
-end
+	end,
+})
 
-MiniDeps.later(setup)
+function setup()
+end

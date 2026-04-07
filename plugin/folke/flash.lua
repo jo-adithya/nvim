@@ -1,6 +1,10 @@
-MiniDeps.add("folke/flash.nvim")
+vim.api.nvim_create_autocmd("BufEnter", {
+	once = true,
+	callback = function()
+		vim.pack.add({"https://github.com/folke/flash.nvim"})
+	
+    -- Setup --
 
-function setup()
 	require("flash").setup({
 		modes = {
 			char = {
@@ -20,6 +24,5 @@ function setup()
 	keymap({ "c" }, "<C-s>", function()
 		require("flash").toggle()
 	end, { desc = "Toggle flash search" })
-end
-
-MiniDeps.later(setup)
+	end,
+})

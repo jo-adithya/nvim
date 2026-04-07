@@ -1,9 +1,14 @@
 vim.diagnostic.config({
-	virtual_text = {
-		source = "if_many",
-		prefix = function(_diagnostic, index, _total)
-			return index == 1 and " " or ""
-		end,
+  virtual_text = false,
+	-- virtual_text = {
+	-- 	source = true,
+	-- 	prefix = function(_diagnostic, index, _total)
+	-- 		return index == 1 and " " or ""
+	-- 	end,
+	--    current_line = false,
+	-- },
+	virtual_lines = {
+		current_line = true,
 	},
 	underline = true,
 	update_in_insert = true,

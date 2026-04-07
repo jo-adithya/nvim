@@ -1,6 +1,10 @@
-MiniDeps.add("hedyhli/outline.nvim")
+vim.api.nvim_create_autocmd("BufEnter", {
+	once = true,
+	callback = function()
+		vim.pack.add({"https://github.com/hedyhli/outline.nvim"})
 
-MiniDeps.later(function()
+    -- Setup --
+
 	require("outline").setup({
 		symbol_folding = {},
 		outline_window = {
@@ -68,4 +72,5 @@ MiniDeps.later(function()
 	wk.add({
 		{ "<leader>cs", "<cmd>Outline<CR>", desc = "Toggle outline" },
 	})
-end)
+	end,
+})
