@@ -152,21 +152,20 @@ function file_name(hl, lsep)
 end
 
 function breadcrumbs(hl)
-	local status, outline = pcall(require, "outline")
+	local status, aerial = pcall(require, "aerial")
 	if not status then
-		vim.notify("Outline.nvim not installed", vim.log.levels.ERROR)
+		vim.notify("aerial.nvim not installed", vim.log.levels.ERROR)
 		return ""
 	end
-	return format_component(outline.get_breadcrumb() or "", hl, "   ")
-	-- local location = outline.get_location()
-	-- if not location then
-	-- 	return ""
-	-- end
-	-- local result = {}
-	-- for i, loc in ipairs(location) do
-	-- 	result[i] = loc.icon .. " " .. loc.name
-	-- end
-	-- return format_component(table.concat(result, "   "), hl, "   ")
+	local symbols = aerial.get_location()
+	if not symbols then
+		return ""
+	end
+	local result = {}
+	for i, loc in ipairs(symbols) do
+		result[i] = loc.icon .. " " .. loc.name
+	end
+	return format_component(table.concat(result, "   "), hl, "   ")
 end
 
 --- Progress component - show percentage of buffer scrolled
