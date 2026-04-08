@@ -1,5 +1,6 @@
 vim.diagnostic.config({
-  virtual_text = false,
+	update_in_insert = false,
+	virtual_text = false,
 	-- virtual_text = {
 	-- 	source = true,
 	-- 	prefix = function(_diagnostic, index, _total)
@@ -7,9 +8,7 @@ vim.diagnostic.config({
 	-- 	end,
 	--    current_line = false,
 	-- },
-	virtual_lines = {
-		current_line = true,
-	},
+	virtual_lines = false,
 	underline = true,
 	update_in_insert = true,
 	severity_sort = true,
@@ -31,6 +30,7 @@ vim.diagnostic.config({
 		border = "rounded",
 		source = "if_many",
 	},
+	underline = { severity = { min = "HINT", max = "ERROR" } },
 })
 
 vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { undercurl = true, sp = "Red" })
