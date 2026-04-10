@@ -42,6 +42,7 @@ require("onedarkpro").setup({
 		["@lsp.typemod.function.defaultLibrary"] = { fg = { dark = "#A6A8F5" } },
 		["@lsp.typemod.function.defaultLibrary.lua"] = { link = "@lsp.typemod.function.defaultLibrary" },
 		WhichKeyIcon = { fg = "${cyan}", underline = false },
+		FloatBorder = { fg = "${blue}", bold = true },
 	},
 })
 
