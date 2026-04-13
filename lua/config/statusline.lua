@@ -1,233 +1,46 @@
--- Config inspired by https://github.com/scottmckendry/Windots/blob/main/nvim/lua/core/statusline.lua
+local mode = require("config.statusline.mode")
+local git = require("config.statusline.git")
+local diagnostics = require("config.statusline.diagnostics")
+local macro = require("config.statusline.macro")
+local progress = require("config.statusline.progress")
+local location = require("config.statusline.location")
+local file_name = require("config.statusline.file_name")
+local breadcrumbs = require("config.statusline.breadcrumbs")
 
--- Mode mappings
-local mode_map = {
-	["n"] = "NORMAL",
-	["no"] = "NORMAL",
-	["v"] = "VISUAL",
-	["V"] = "V-LINE",
-	["\22"] = "V-BLOCK",
-	["i"] = "INSERT",
-	["ic"] = "INSERT",
-	["c"] = "COMMAND",
-	["r"] = "REPLACE",
-	["r?"] = "CONFIRM",
-	["!"] = "SHELL",
-	["t"] = "TERMINAL",
-	["nt"] = "TERMINAL",
+Statusline = {
+	active = function()
+		return table.concat({
+			mode(),
+			git.branch("StatuslineGit"),
+			diagnostics(),
+			"%=",
+			macro.recording(),
+			progress("Special"),
+			location("Changed"),
+		})
+	end,
+	inactive = function()
+		return table.concat({
+			"%=",
+			progress("Comment"),
+			location("Comment"),
+		})
+	end,
 }
 
-local mode_hl_map = {
-	["NORMAL"] = "StatuslineNormal",
-	["VISUAL"] = "StatuslineVisual",
-	["V-LINE"] = "StatuslineVisual",
-	["V-BLOCK"] = "StatuslineVisual",
-	["INSERT"] = "StatuslineInsert",
-	["COMMAND"] = "StatuslineCommand",
-	["TERMINAL"] = "StatuslineCommand",
+Winbar = {
+	active = function()
+		return table.concat({
+			file_name("StatuslineFileName", ""),
+			breadcrumbs("Comment"),
+		})
+	end,
+	inactive = function()
+		return table.concat({
+			file_name("Comment", ""),
+		})
+	end,
 }
-
-----------------------------------
---       Helper Functions       --
-----------------------------------
-
---- Format a given component value with a highlight group in the format expected by the statusline
---- @param val string The value to format
---- @param hl string|nil The highlight group to use
---- @param l_sep string|nil The left separator to use
---- @param r_sep string|nil The right separator to use
---- @return string
-local function format_component(val, hl, l_sep, r_sep)
-	l_sep = l_sep or "  "
-	r_sep = r_sep or " "
-	hl = hl or "Comment"
-	return l_sep .. "%#" .. hl .. "#" .. val .. "%*" .. r_sep
-end
-
---- Get the count of diagnostics for a given severity
---- @param severity "ERROR"|"WARN"|"HINT"|"INFO"
---- @return number
-local function get_diagnostic_count(severity)
-	return #vim.diagnostic.get(0, { severity = vim.diagnostic.severity[severity] })
-end
-
-----------------------------------
---          Components          --
-----------------------------------
-
---- Mode component with dynamic highlights
---- @return string
-function mode()
-	local current_mode = vim.api.nvim_get_mode().mode
-	local mode_str = mode_map[current_mode] or current_mode
-	local hl_group = mode_hl_map[mode_str] or nil
-	return format_component("▌  " .. mode_str, hl_group, "")
-end
-
---- Git branch component based on CWD - depends on gitsigns.nvim
---- @param hl string The highlight group to use
---- @return string
-function git_branch(hl)
-	local branch = vim.b.gitsigns_head
-	if not branch then
-		return ""
-	end
-	return format_component(" " .. branch, hl)
-end
-
---- Buffer diagnostics component
---- @return string
-function diagnostics()
-	local errors = get_diagnostic_count("ERROR")
-	local warnings = get_diagnostic_count("WARN")
-	local hints = get_diagnostic_count("HINT")
-	local info = get_diagnostic_count("INFO")
-
-	if errors + warnings + hints + info == 0 then
-		return ""
-	end
-
-	local components = {
-		errors > 0 and format_component(" " .. errors, "DiagnosticError", "") or "",
-		warnings > 0 and format_component(" " .. warnings, "DiagnosticWarn", "") or "",
-		hints > 0 and format_component(" " .. hints, "DiagnosticHint", "") or "",
-		info > 0 and format_component("󰝶 " .. info, "DiagnosticInfo", "") or "",
-	}
-
-	return " " .. table.concat(components, "") .. " "
-end
-
-function macro_recording()
-	local reg = vim.fn.reg_recording()
-	if reg == "" then
-		return ""
-	end
-	return format_component("󰐾 " .. reg, "DiagnosticError")
-end
-
---- File name component - show the current buffer's file name and coloured icon. Depends on mini.icons.
---- @param hl string The highlight group to use
---- @param lsep string|nil The left separator to use
-function file_name(hl, lsep)
-	local ft_overrides = {
-		["copilot-chat"] = { name = "copilot", icon = "󰚩 ", icon_hl = "MiniIconsAzure" },
-		["grug-far"] = { name = "grug-far", icon = " ", icon_hl = "DiagnosticWarn" },
-		["ministarter"] = { name = "", icon = "", icon_hl = "Directory" },
-		["mason"] = { name = "mason", icon = "󱌣 ", icon_hl = "MiniIconsAzure" },
-		["minifiles"] = { name = "files", icon = "󰝰 ", icon_hl = "Directory" },
-		["yazi"] = { name = "files", icon = "󰝰 ", icon_hl = "Directory" },
-		["snacks_picker_input"] = { name = "picker", icon = "󰦨 ", icon_hl = "Changed" },
-	}
-
-	local fn_overrides = {
-		["k9s"] = { icon = "󱃾 ", icon_hl = "Directory" },
-		["lazygit"] = { icon = " ", icon_hl = "Changed" },
-	}
-
-	local winid = vim.g.statusline_winid or vim.g.winbar_winid
-	local bufnr = vim.api.nvim_win_get_buf(winid)
-
-	-- Filetype overrides
-	local ft = vim.bo[bufnr].filetype
-	if ft_overrides[ft] then
-		return format_component(ft_overrides[ft].icon, ft_overrides[ft].icon_hl, lsep or " ", "")
-			.. format_component(ft_overrides[ft].name, hl, " ")
-	end
-
-	-- Filename overrides
-	local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":t")
-	if filename == "" then
-		return ""
-	end
-	if fn_overrides[filename] then
-		icon = fn_overrides[filename].icon
-		icon_hl = fn_overrides[filename].icon_hl
-	end
-
-	local icon, icon_hl = require("mini.icons").get("file", filename)
-	local modified = vim.bo[bufnr].modified and " " or ""
-	local readonly = vim.bo[bufnr].readonly and " 󰌾" or ""
-	return format_component(icon, icon_hl, lsep or "  ", "")
-		.. format_component(filename .. modified .. readonly, hl, " ")
-end
-
-function breadcrumbs(hl)
-	local status, aerial = pcall(require, "aerial")
-	if not status then
-		vim.notify("aerial.nvim not installed", vim.log.levels.ERROR)
-		return ""
-	end
-	local symbols = aerial.get_location()
-	if not symbols then
-		return ""
-	end
-	local result = {}
-	for i, loc in ipairs(symbols) do
-		result[i] = loc.icon .. " " .. loc.name
-	end
-	return format_component(table.concat(result, "   "), hl, "   ")
-end
-
---- Progress component - show percentage of buffer scrolled
---- @param hl string|nil The highlight group to use
-function progress(hl)
-	return format_component("%2p%%", hl)
-end
-
---- Location component - show current line and column
---- @param hl string|nil The highlight group to use
-function location(hl)
-	return format_component("%l:%c", hl, "  ", " ")
-end
-
-----------------------------------
---          Statusline          --
-----------------------------------
-
-Statusline = {}
-
-Statusline.active = function()
-	return table.concat({
-		mode(),
-		git_branch("StatuslineGit"),
-		-- file_name("StatuslineFileName"),
-		diagnostics(),
-		"%=", -- mark end of left alignment
-		macro_recording(),
-		progress("Special"),
-		location("Changed"),
-	})
-end
-
-Statusline.inactive = function()
-	return table.concat({
-		-- file_name("Comment"),
-		"%=", -- mark end of left alignment
-		progress("Comment"),
-		location("Comment"),
-	})
-end
-
-Tabline = {}
-
-Tabline.active = function() end
-
-Tabline.inactive = function() end
-
-Winbar = {}
-
-Winbar.active = function()
-	return table.concat({
-		file_name("StatuslineFileName", ""),
-		breadcrumbs("Comment"),
-	})
-end
-
-Winbar.inactive = function()
-	return table.concat({
-		file_name("Comment", ""),
-	})
-end
 
 Winbar.build = function()
 	local is_active = vim.g.statusline_winid == vim.api.nvim_get_current_win()

@@ -39,10 +39,16 @@ require("onedarkpro").setup({
 		StatuslineCommand = { fg = "${purple}", italic = true, bold = true },
 		StatuslineGit = { fg = "${purple}", italic = true, bold = true },
 		StatuslineFileName = { fg = "${fg}", italic = true },
+		Folded = { fg = "${cyan}", italic = true },
+    -- Folded = { link = "Comment" },
+		FoldColumn = { fg = "${line_number}", bg = "NONE" },
 		["@lsp.typemod.function.defaultLibrary"] = { fg = { dark = "#A6A8F5" } },
 		["@lsp.typemod.function.defaultLibrary.lua"] = { link = "@lsp.typemod.function.defaultLibrary" },
 		WhichKeyIcon = { fg = "${cyan}", underline = false },
 		FloatBorder = { fg = "${blue}", bold = true },
+		CursorLine = { bg = "#26263d" },
+		CursorLineNr = { bg = "#26263d", fg = "${purple}" },
+		Visual = { bg = "#393570" },
 	},
 })
 

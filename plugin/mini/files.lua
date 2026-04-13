@@ -7,6 +7,16 @@ local options = {
 	width_preview_ratio = 0.45,
 }
 
+vim.api.nvim_create_autocmd("User", {
+	pattern = "MiniFilesBufferCreate",
+	callback = function(args)
+		vim.keymap.set("n", "q", function()
+			MiniFiles.synchronize()
+			MiniFiles.close()
+		end, { buffer = args.data.buf_id })
+	end,
+})
+
 -- Notes:
 -- depth_focus == 1: means the focused window is at the very left
 
@@ -105,9 +115,17 @@ require("mini.files").setup({
 		width_preview = 50,
 		max_number = 3,
 	},
+	mappings = {
+		go_in = "l",
+		go_in_plus = "l",
+		go_out = "h",
+		go_out_plus = "",
+	},
 })
 
 vim.api.nvim_set_hl(0, "MiniFilesBorderFocused", { link = "MiniIconsBlue" })
 vim.api.nvim_set_hl(0, "MiniFilesBorder", { link = "Comment" })
 
-vim.keymap.set("n", "<leader>e", "<cmd>lua MiniFiles.open()<cr>", { desc = "Open file explorer" })
+vim.keymap.set("n", "<leader>e", function()
+	MiniFiles.open(vim.api.nvim_buf_get_name(0))
+end, { desc = "Open file explorer" })

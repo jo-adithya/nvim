@@ -12,20 +12,21 @@ vim.diagnostic.config({
 	underline = true,
 	update_in_insert = true,
 	severity_sort = true,
-	signs = {
-		text = {
-			[vim.diagnostic.severity.ERROR] = " ",
-			[vim.diagnostic.severity.WARN] = " ",
-			[vim.diagnostic.severity.INFO] = " ",
-			[vim.diagnostic.severity.HINT] = " ",
-		},
-		numhl = {
-			[vim.diagnostic.severity.ERROR] = "DiagnosticVirtualTextError",
-			[vim.diagnostic.severity.WARN] = "DiagnosticVirtualTextWarn",
-			[vim.diagnostic.severity.INFO] = "DiagnosticVirtualTextInfo",
-			[vim.diagnostic.severity.HINT] = "DiagnosticVirtualTextHint",
-		},
-	},
+  signs = false,
+	-- signs = {
+	-- 	text = {
+	-- 		[vim.diagnostic.severity.ERROR] = " ",
+	-- 		[vim.diagnostic.severity.WARN] = " ",
+	-- 		[vim.diagnostic.severity.INFO] = " ",
+	-- 		[vim.diagnostic.severity.HINT] = " ",
+	-- 	},
+	-- 	numhl = {
+	-- 		[vim.diagnostic.severity.ERROR] = "DiagnosticVirtualTextError",
+	-- 		[vim.diagnostic.severity.WARN] = "DiagnosticVirtualTextWarn",
+	-- 		[vim.diagnostic.severity.INFO] = "DiagnosticVirtualTextInfo",
+	-- 		[vim.diagnostic.severity.HINT] = "DiagnosticVirtualTextHint",
+	-- 	},
+	-- },
 	float = {
 		border = "rounded",
 		source = "if_many",
