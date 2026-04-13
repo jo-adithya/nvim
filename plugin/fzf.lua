@@ -28,6 +28,7 @@ wk.add({
   { "<leader>/", "<cmd>FzfLua live_grep<cr>", desc = "Find global files" },
   { "<leader>f", group = "Find", icon = { icon = "", color = "blue" } },
   { "<leader>ff", "<cmd>FzfLua files<cr>", desc = "Find files" },
+  { "<leader>fc", "<cmd>FzfLua files cwd=~/.config/nvim<cr>", desc = "Find config files" },
   { "<leader>fg", "<cmd>FzfLua live_grep_resume<cr>", desc = "Resume live grep" },
   { "<leader>fb", "<cmd>FzfLua buffers<cr>", desc = "Find buffers" },
   { "<leader>fm", "<cmd>FzfLua marks<cr>", desc = "Find marks" },
