@@ -19,7 +19,7 @@ local options = {
 	foldenable = true,
 	foldmethod = "expr",
 	foldexpr = "v:lua.vim.treesitter.foldexpr()",
-	statuscolumn = "%=%{v:relnum?v:relnum:v:lnum}   ",
+	statuscolumn = " %=%{v:relnum?v:relnum:v:lnum}   ",
 	signcolumn = "yes:1",
 	relativenumber = true,
 	expandtab = true,
