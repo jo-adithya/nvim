@@ -1,92 +1,87 @@
 local capabilities = {
-	textDocument = {
-		foldingRange = {
-			dynamicRegistration = false,
-			lineFoldingOnly = true,
-		},
-	},
+  textDocument = {
+    foldingRange = {
+      dynamicRegistration = false,
+      lineFoldingOnly = true,
+    },
+  },
 }
 
 local function enable_lsp()
-	vim.lsp.enable({
-		-- Bash
-		"bashls",
+  vim.lsp.enable({
+    -- Bash
+    "bashls",
 
-		-- Lua
-		"emmylua_ls",
+    -- Lua
+    "emmylua_ls",
 
-		-- Python
-		-- "basedpyright",
-		-- "ty",
-		"pyrefly",
-		"ruff",
+    -- Python
+    -- "basedpyright",
+    -- "ty",
+    "pyrefly",
+    "ruff",
 
-		-- Typescript/Javascript/Svelte
-		-- "ts_ls",
-		"vtsls",
-		-- "tsgo",
-		"svelteserver",
-		"biome",
-		"tailwindcss",
-		"cssls",
-		"emmet_language_server",
+    -- Typescript/Javascript/Svelte
+    -- "ts_ls",
+    "vtsls",
+    -- "tsgo",
+    "svelteserver",
+    "biome",
+    "tailwindcss",
+    "cssls",
+    "emmet_language_server",
 
-		-- Typst
-		"tinymist",
+    -- Typst
+    "tinymist",
 
-		-- Rust
-		"rust_analyzer",
-		"crates_lsp",
-		"tombi",
-	})
+    -- Rust
+    "rust_analyzer",
+    "crates_lsp",
+    "tombi",
+  })
 end
 
 vim.schedule(function()
-	capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
+  capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
 
-	---@diagnostic disable-next-line: param-type-not-match
-	vim.lsp.config("*", {
-		capabilities = capabilities,
-		on_attach = function(client, bufnr)
-			-- keymaps
-			vim.keymap.set("n", "gK", vim.lsp.buf.signature_help, { desc = "View signature" })
-			vim.keymap.set("n", "K", function()
-				vim.lsp.buf.hover({ border = "rounded" })
-			end, { desc = "View definition", buffer = bufnr })
-			vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Get implementation" })
-			vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, { desc = "Add workspace to folder" })
-			vim.keymap.set(
-				"n",
-				"<space>wr",
-				vim.lsp.buf.remove_workspace_folder,
-				{ desc = "remove workspace from folder" }
-			)
-			vim.keymap.set("n", "<space>wl", function()
-				print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-			end, { desc = "List workspace folders" })
-			vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, { desc = "Code action" })
-			-- vim.keymap.set('n', 'gr', vim.lsp.buf.references, { desc = "Get references" })
-			vim.keymap.set("n", "<leader>d", function()
-				vim.diagnostic.open_float({ bufnr = 0, border = "rounded" })
-			end, { desc = "Open diagnostic on current line" })
-			vim.keymap.set("n", "[d", function()
-				vim.diagnostic.jump({ count = -1, float = { border = "rounded" } })
-			end, { desc = "Jump to next diagnostic" })
-			vim.keymap.set("n", "]d", function()
-				vim.diagnostic.jump({ count = 1, float = { border = "rounded" } })
-			end, { desc = "Jump to previous diagnostic" })
-			vim.keymap.set("n", "<space>q", function()
-				vim.diagnostic.setloclist({ open = false })
-				local window = vim.api.nvim_get_current_win()
-				vim.cmd.lwindow()
-				vim.api.nvim_set_current_win(window)
-			end, { desc = "Set diagnostic list" })
-			-- vim.keymap.set('n', '<space>cf', function()
-			--   vim.lsp.buf.format({ async = true, })
-			-- end, { desc = "Format document" })
-		end,
-	})
+  ---@diagnostic disable-next-line: param-type-not-match
+  vim.lsp.config("*", {
+    capabilities = capabilities,
+    on_attach = function(client, bufnr)
+      -- keymaps
+      vim.keymap.set("n", "gK", vim.lsp.buf.signature_help, { desc = "View signature" })
+      vim.keymap.set("n", "K", function()
+        vim.lsp.buf.hover({ border = "rounded" })
+      end, { desc = "View definition", buffer = bufnr })
+      vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Get implementation" })
+      vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, { desc = "Add workspace to folder" })
+      vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, { desc = "remove workspace from folder" })
+      vim.keymap.set("n", "<space>wl", function()
+        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+      end, { desc = "List workspace folders" })
+      vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, { desc = "Code action" })
+      -- vim.keymap.set('n', 'gr', vim.lsp.buf.references, { desc = "Get references" })
+      vim.keymap.set("n", "<leader>d", function()
+        vim.diagnostic.open_float({ bufnr = 0, border = "rounded" })
+      end, { desc = "Open diagnostic on current line" })
+      vim.keymap.set("n", "[d", function()
+        vim.diagnostic.jump({ count = -1, float = { border = "rounded" } })
+      end, { desc = "Jump to next diagnostic" })
+      vim.keymap.set("n", "]d", function()
+        vim.diagnostic.jump({ count = 1, float = { border = "rounded" } })
+      end, { desc = "Jump to previous diagnostic" })
+      vim.keymap.set("n", "<space>q", function()
+        vim.diagnostic.setloclist({ open = false })
+        local window = vim.api.nvim_get_current_win()
+        vim.cmd.lwindow()
+        vim.api.nvim_set_current_win(window)
+      end, { desc = "Set diagnostic list" })
+      -- vim.keymap.set('n', '<space>cf', function()
+      --   vim.lsp.buf.format({ async = true, })
+      -- end, { desc = "Format document" })
+    end,
+  })
 
-	enable_lsp()
-	vim.lsp.codelens.enable(true)
+  enable_lsp()
+  vim.lsp.codelens.enable(true)
 end)

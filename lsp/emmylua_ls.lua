@@ -12,20 +12,20 @@
 
 ---@type vim.lsp.Config
 return {
-	cmd = { "emmylua_ls" },
-	filetypes = { "lua" },
-	root_markers = {
-		".luarc.json",
-		".emmyrc.json",
-		".luacheckrc",
-		".git",
-	},
-	workspace_required = false,
-	-- settings = {
-	-- 	Lua = {
-	-- 		workspace = {
-	-- 			library = vim.api.nvim_get_runtime_file("", true),
-	-- 		},
-	-- 	},
-	-- },
+  cmd = { "emmylua_ls" },
+  filetypes = { "lua" },
+  root_markers = {
+    ".luarc.json",
+    ".emmyrc.json",
+    ".luacheckrc",
+    ".git",
+  },
+  workspace_required = false,
+  -- settings = {
+  -- 	Lua = {
+  -- 		workspace = {
+  -- 			library = vim.api.nvim_get_runtime_file("", true),
+  -- 		},
+  -- 	},
+  -- },
 }

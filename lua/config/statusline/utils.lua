@@ -7,10 +7,10 @@ local M = {}
 --- @param r_sep string|nil The right separator to use
 --- @return string
 function M.format_component(val, hl, l_sep, r_sep)
-	l_sep = l_sep or "  "
-	r_sep = r_sep or " "
-	hl = hl or "Comment"
-	return l_sep .. "%#" .. hl .. "#" .. val .. "%*" .. r_sep
+  l_sep = l_sep or "  "
+  r_sep = r_sep or " "
+  hl = hl or "Comment"
+  return l_sep .. "%#" .. hl .. "#" .. val .. "%*" .. r_sep
 end
 
 return M
