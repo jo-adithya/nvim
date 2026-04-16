@@ -94,6 +94,10 @@
       "rev": "f128369d10d68eb2a3963b6979f02b24af9d9c24",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
+    "smart-splits.nvim": {
+      "rev": "ba2850ff3d3b09785a7105c69d06a12117d4b97d",
+      "src": "https://github.com/mrjones2014/smart-splits.nvim"
+    },
     "tiny-cmdline.nvim": {
       "rev": "ad58747b955d0743ccfd56e97da1a4c1fac89f58",
       "src": "https://github.com/rachartier/tiny-cmdline.nvim"
