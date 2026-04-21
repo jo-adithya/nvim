@@ -27,7 +27,7 @@ vim.schedule(function()
     workspaces = {
       {
         name = "ideaverse",
-        path = "~/documents/ideaverse",
+        path = "~/documents/personal/ideaverse",
       },
     },
   })

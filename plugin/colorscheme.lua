@@ -46,8 +46,8 @@ require("onedarkpro").setup({
     ["@lsp.typemod.function.defaultLibrary.lua"] = { link = "@lsp.typemod.function.defaultLibrary" },
     WhichKeyIcon = { fg = "${cyan}", underline = false },
     FloatBorder = { fg = "${blue}", bold = true },
-    CursorLine = { bg = "#26263d" },
-    CursorLineNr = { bg = "#26263d", fg = "${purple}" },
+    CursorLine = { bg = "#333946" },
+    CursorLineNr = { bg = "#333946", fg = "${purple}" },
     Visual = { bg = "#393570" },
   },
 })
