@@ -83,5 +83,4 @@ vim.schedule(function()
   })
 
   enable_lsp()
-  vim.lsp.codelens.enable(true)
 end)

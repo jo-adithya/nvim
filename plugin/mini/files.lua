@@ -1,11 +1,104 @@
 vim.pack.add({ "https://github.com/nvim-mini/mini.files" })
 
+local MiniFiles = require("mini.files")
+
 local options = {
   height_ratio = 0.75,
   width_ratio = 0.8,
   width_focused_ratio = 0.35,
   width_preview_ratio = 0.45,
 }
+
+local WINDOW_GAP = 2
+
+function safe_get_explorer_state()
+  local ok, state = pcall(MiniFiles.get_explorer_state)
+  if not ok then
+    return nil
+  end
+  return state
+end
+
+function safe_win_get_config(win_id)
+  if not vim.api.nvim_win_is_valid(win_id) then
+    return nil
+  end
+  local ok, config = pcall(vim.api.nvim_win_get_config, win_id)
+  if not ok then
+    return nil
+  end
+  return config
+end
+
+function safe_win_set_config(win_id, config)
+  if not vim.api.nvim_win_is_valid(win_id) then
+    return false
+  end
+  local ok = pcall(vim.api.nvim_win_set_config, win_id, config)
+  return ok
+end
+
+function safe_set_win_option(win_id, name, value)
+  if not vim.api.nvim_win_is_valid(win_id) then
+    return false
+  end
+  local ok = pcall(vim.api.nvim_set_option_value, name, value, { win = win_id })
+  return ok
+end
+
+function get_window_index(state, win_id)
+  for i, w in ipairs(state.windows) do
+    if w.win_id == win_id then
+      return i
+    end
+  end
+  return nil
+end
+
+function get_focused_window_index(state)
+  local focused_path = state.branch[state.depth_focus]
+  if focused_path == nil then
+    return nil
+  end
+  for i, w in ipairs(state.windows) do
+    if w.path == focused_path then
+      return i
+    end
+  end
+  return nil
+end
+
+---@param total_width integer
+---@param num_windows integer
+function compute_widths(total_width, num_windows)
+  local focused = math.floor(options.width_focused_ratio * total_width)
+  local child = math.floor(options.width_preview_ratio * total_width)
+  local other = total_width - focused - child
+
+  if num_windows == 2 then
+    child = total_width - focused
+    -- other = 0
+  elseif num_windows <= 1 then
+    child = 0
+    other = 0
+  end
+
+  return focused, child, other
+end
+
+function compute_column(leftmost_col, depth_offset, index_left, widths)
+  local focused, child, other = widths.focused, widths.child, widths.other
+
+  if depth_offset == 0 then
+    return leftmost_col + index_left * (other + WINDOW_GAP)
+  elseif depth_offset == 1 then
+    return leftmost_col + (index_left - 1) * (other + WINDOW_GAP) + focused + WINDOW_GAP
+  elseif depth_offset >= 2 then
+    return leftmost_col + (index_left - 2) * (other + WINDOW_GAP) + focused + WINDOW_GAP + child + WINDOW_GAP
+  end
+
+  return leftmost_col + index_left * (other + WINDOW_GAP)
+end
 
 vim.api.nvim_create_autocmd("User", {
   pattern = "MiniFilesBufferCreate",
@@ -21,29 +114,26 @@ vim.api.nvim_create_autocmd("User", {
 -- depth_focus == 1: means the focused window is at the very left
 
 local ensure_center_layout = function(ev)
-  local state = MiniFiles.get_explorer_state()
+  local state = safe_get_explorer_state()
   if state == nil then
     return
   end
 
-  -- get the current window global/absolute depth from mini files state
-  local path_this = vim.api.nvim_buf_get_name(ev.data.buf_id):match("^minifiles://%d+/(.*)$")
-  local depth_this
-  for i, path in ipairs(state.branch) do
-    if path == path_this then
-      depth_this = i
-    end
-  end
-  if depth_this == nil then
+  local win_index = get_window_index(state, ev.data.win_id)
+  if win_index == nil then
     return
   end
 
-  local depth_offset = depth_this - state.depth_focus
+  local focused_index = get_focused_window_index(state)
+  if focused_index == nil then
+    return
+  end
+
+  local depth_offset = win_index - focused_index
 
   local total_width = math.floor(options.width_ratio * vim.o.columns)
-  local width_focused = math.floor(options.width_focused_ratio * total_width)
-  local width_child = math.floor(options.width_preview_ratio * total_width)
-  local width_other = total_width - width_focused - width_child
+  local effective_windows = #state.windows
+  local width_focused, width_child, width_other = compute_widths(total_width, effective_windows)
 
   -- Determine this window's width based on its position
   local win_width
@@ -55,47 +145,34 @@ local ensure_center_layout = function(ev)
     win_width = width_other
   end
 
-  local win_config = vim.api.nvim_win_get_config(ev.data.win_id)
+  local win_config = safe_win_get_config(ev.data.win_id)
+  if win_config == nil then
+    return
+  end
   win_config.width = win_width
   win_config.zindex = 99
-  win_config.col = math.floor(0.5 * (vim.o.columns - width_focused))
 
   local leftmost_col = math.floor(0.5 * (vim.o.columns - total_width))
-  local col
-
-  local num_left = 0
-  for i, w in ipairs(state.windows) do
-    if w.win_id == ev.data.win_id then
-      num_left = i - 1
-    end
-  end
-
-  -- calculate the col position of each window
-  local num_windows = #state.windows
-  if depth_offset == 0 then
-    col = leftmost_col + num_left * (width_other + 2)
-  elseif depth_offset == 1 then
-    col = leftmost_col + (num_left - 1) * (width_other + 2) + width_focused + 2
-  elseif depth_offset >= 2 then
-    col = leftmost_col + (num_left - 2) * (width_other + 2) + width_focused + 2 + width_child + 2
-  else
-    col = leftmost_col + num_left * (width_other + 2)
-  end
-
-  win_config.col = col
-  win_config.height = math.floor(0.75 * vim.o.lines)
+  win_config.col = compute_column(leftmost_col, depth_offset, win_index - 1, {
+    focused = width_focused,
+    child = width_child,
+    other = width_other,
+  })
+  win_config.height = math.floor(options.height_ratio * vim.o.lines)
   win_config.row = math.floor(0.5 * (vim.o.lines - win_config.height))
-  vim.api.nvim_win_set_config(ev.data.win_id, win_config)
+  if not safe_win_set_config(ev.data.win_id, win_config) then
+    return
+  end
 
   -- Set the win border highlight
   if depth_offset == 0 then
-    vim.wo[ev.data.win_id].winhighlight = "FloatBorder:MiniFilesBorderFocused"
-    vim.wo[ev.data.win_id].relativenumber = true
-    vim.wo[ev.data.win_id].statuscolumn = " %=%{v:relnum?v:relnum:v:lnum}   "
+    safe_set_win_option(ev.data.win_id, "winhighlight", "FloatBorder:MiniFilesBorderFocused")
+    safe_set_win_option(ev.data.win_id, "relativenumber", true)
+    safe_set_win_option(ev.data.win_id, "statuscolumn", " %=%{v:relnum?v:relnum:v:lnum}   ")
   else
-    vim.wo[ev.data.win_id].winhighlight = "FloatBorder:MiniFilesBorder"
-    vim.wo[ev.data.win_id].relativenumber = false
-    vim.wo[ev.data.win_id].statuscolumn = " "
+    safe_set_win_option(ev.data.win_id, "winhighlight", "FloatBorder:MiniFilesBorder")
+    safe_set_win_option(ev.data.win_id, "relativenumber", false)
+    safe_set_win_option(ev.data.win_id, "statuscolumn", " ")
   end
 end
 
@@ -104,7 +181,7 @@ vim.api.nvim_create_autocmd("User", {
   callback = ensure_center_layout,
 })
 
-require("mini.files").setup({
+MiniFiles.setup({
   content = {
     prefix = function(fs_entry)
       local prefix, hl = MiniFiles.default_prefix(fs_entry)
@@ -113,7 +190,7 @@ require("mini.files").setup({
   },
   windows = {
     preview = true,
-    width_preview = 50,
+    width_preview = 20,
     max_number = 3,
   },
   mappings = {
@@ -128,5 +205,7 @@ vim.api.nvim_set_hl(0, "MiniFilesBorderFocused", { link = "MiniIconsBlue" })
 vim.api.nvim_set_hl(0, "MiniFilesBorder", { link = "Comment" })
 
 vim.keymap.set("n", "<leader>e", function()
-  MiniFiles.open(vim.api.nvim_buf_get_name(0))
+  if not MiniFiles.close() then
+    MiniFiles.open(vim.api.nvim_buf_get_name(0))
+  end
 end, { desc = "Open file explorer" })
