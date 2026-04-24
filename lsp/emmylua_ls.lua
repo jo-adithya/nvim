@@ -21,11 +21,11 @@ return {
     ".git",
   },
   workspace_required = false,
-  -- settings = {
-  -- 	Lua = {
-  -- 		workspace = {
-  -- 			library = vim.api.nvim_get_runtime_file("", true),
-  -- 		},
-  -- 	},
-  -- },
+  settings = {
+    Lua = {
+      workspace = {
+        library = vim.api.nvim_get_runtime_file("", true),
+      },
+    },
+  },
 }
