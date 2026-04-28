@@ -7,24 +7,25 @@ vim.api.nvim_create_autocmd("BufEnter", {
   callback = function()
     require("aerial").setup({
       layout = {
-        min_width = { 0.2, 30 },
+        min_width = { 0.25, 40 },
         max_width = { 0.45, 50 },
       },
       nerd_font = true,
       show_guides = true,
       guides = {
         -- When the child item has a sibling below it
-        mid_item = "├─ ",
+        mid_item = "├ ",
         -- When the child item is the last in the list
-        last_item = "└─ ",
+        last_item = "└ ",
         -- When there are nested child guides to the right
         nested_top = "│  ",
         -- Raw indentation
-        whitespace = "   ",
+        whitespace = "  ",
       },
       icons = {
         Collapsed = "",
       },
+      autojump = true,
 
       -- optionally use on_attach to set keymaps when aerial has attached to a buffer
       on_attach = function(bufnr)
