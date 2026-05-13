@@ -23,7 +23,6 @@ local options = {
 
   -- Folding and window layout
   foldcolumn = "0",
-  foldlevel = 1,
   foldlevelstart = 2,
   foldenable = true,
   foldmethod = "expr",

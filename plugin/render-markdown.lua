@@ -7,27 +7,26 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown",
   callback = function()
     require("render-markdown").setup({
+      render_modes = true,
       completions = { lsp = { enabled = true } },
       code = {
         left_pad = 2,
         language_pad = 2,
+        min_width = 80,
         border = "thick",
       },
       heading = {
-        border = true,
-        icons = { "# ", "## ", "### ", "#### ", "##### ", "###### " },
-        left_pad = 2,
+        border = false,
+        -- icons = { "# ", "## ", "### ", "#### ", "##### ", "###### " },
+        position = "inline",
+        left_pad = 1,
         -- border_virtual = true,
       },
       checkbox = {
-        unchecked = { icon = "󱥸 " },
-        checked = { icon = " " },
+        unchecked = { icon = " " },
+        checked = { icon = " " },
         left_pad = 1,
         right_pad = 2,
-      },
-      dash = {
-        width = 20,
-        left_margin = 0.5,
       },
       pipe_table = { preset = "double", alignment_indicator = "┅" },
       bullet = {
