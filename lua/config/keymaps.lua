@@ -2,6 +2,8 @@ local keymap = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
 keymap("x", "p", [["_dP]])
+keymap("n", "j", "gj")
+keymap("n", "k", "gk")
 
 -- more good
 keymap({ "n", "o", "x" }, "<D-h>", "^", opts)
