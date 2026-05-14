@@ -74,7 +74,6 @@ vim.schedule(function()
                 ["d"] = "bufdelete",
               },
             },
-            list = { keys = { ["d"] = "bufdelete" } },
           },
         })
       end,
@@ -101,5 +100,116 @@ vim.schedule(function()
       Snacks.picker.notifications()
     end,
     desc = "Notification History",
+  })
+
+  wk.add({
+    "<leader>ft",
+    function()
+      local date = vim.fn.strftime("%Y-%m-%d")
+      Snacks.picker.grep({
+        on_show = function(picker)
+          vim.cmd.stopinsert()
+        end,
+        search = "^- \\[[ x]\\]",
+        prompt = "  ",
+        dirs = { vim.fn.expand("~/documents/personal/ideaverse/01-daily-notes/") },
+        regex = true,
+        live = false,
+        glob = date .. ".md",
+        finder = "grep",
+        show_empty = true,
+        format = function(item, ctx)
+          local line = item.line or ""
+          local checked = line:match("%- %[x%]")
+          local rest = line:match("%- %[.%] (.*)")
+
+          if rest then
+            local icon = checked and "   " or "   "
+            local hl = checked and "DiagnosticOk" or "DiagnosticError"
+            return {
+              { icon, hl },
+              { rest, "Normal" },
+            }
+          end
+          return { { line, "Normal" } }
+        end,
+        formatters = {
+          file = { filename = "hidden" },
+        },
+        actions = {
+          toggle_todo = function(picker, item)
+            if not item then
+              return
+            end
+
+            local cursor = picker.list.cursor -- save position
+
+            local line = item.line
+            local new_line
+            if line:match("%- %[ %]") then
+              new_line = line:gsub("%- %[ %]", "- [x]", 1)
+            else
+              new_line = line:gsub("%- %[x%]", "- [ ]", 1)
+            end
+            -- replace the line in the file
+            local buf = vim.fn.bufadd(item.file)
+            vim.fn.bufload(buf)
+            vim.api.nvim_buf_set_lines(buf, item.pos[1] - 1, item.pos[1], false, { new_line })
+            vim.api.nvim_buf_call(buf, function()
+              vim.cmd("silent write")
+            end)
+
+            picker:find({
+              on_done = function()
+                picker.list:move(cursor - 1) -- restore position
+              end,
+            })
+          end,
+        },
+        win = {
+          input = {
+            keys = {
+              ["<space>"] = "toggle_todo",
+            },
+            wo = {
+              winbar = "",
+            },
+          },
+          list = {
+            keys = {
+              ["<space>"] = "toggle_todo",
+            },
+          },
+        },
+        layout = {
+          ---@diagnostic disable-next-line: missing-fields
+          layout = {
+            box = "vertical", -- root box required
+            backdrop = false,
+            width = 0.5,
+            height = 0.6,
+            border = true,
+            -- title = " Tasks ",
+            -- title_pos = "center",
+            {
+              win = "input",
+              height = 1,
+              title = "Tasks",
+              title_pos = "center",
+              -- border = false,
+              border = { " ", " ", " ", " ", " ", " ", " ", " " },
+            },
+            {
+              win = "list",
+              -- title = " Tasks ",
+              -- title_pos = "left",
+              border = false,
+              -- border = { " ", " ", " ", " ", " ", " ", " ", " " },
+            },
+          },
+        },
+      })
+    end,
+    desc = "Find todos",
   })
 end)
